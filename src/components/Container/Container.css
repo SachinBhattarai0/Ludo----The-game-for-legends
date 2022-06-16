@@ -1,0 +1,30 @@
+.container {
+  height: 95vh;
+  width: 45vw;
+  background-color: white;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  border: 2px solid black;
+}
+
+@media screen and (max-width: 1250px) {
+  .container {
+    height: 95vh;
+    width: 70vw;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .container {
+    height: 80vh;
+    width: 85vw;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    height: 70vh;
+    width: 85vw;
+  }
+}
