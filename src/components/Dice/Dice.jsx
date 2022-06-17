@@ -12,17 +12,24 @@ const Dice = () => {
     setGameInfo({ ...GameInfo, ["currentUserPoints"]: randomPoints });
   };
 
+  const generateDiceDots = ()=>{
+    const dice = document.getElementById('dice')
+    dice.innerHTML = '';
+    for(let i= 0;i<currentUserPoints;i++){
+      dice.innerHTML += `<div class=${classes["dice-dot"]}></div>`
+    }
+  }
+
+  useEffect(generateDiceDots,[currentUserPoints])
+
+
   return (
     <div
       className={classes["dice-container"]}
       onClick={generateNewRandomPoints}
     >
       <p>Red's Turn</p>
-      <div className={classes.dice}>
-        {/* {new Array(currentUserPoints).map((_,i) => {
-          return <div key={i} className={classes["dice-dot"]}></div>;
-        })} */}
-      </div>
+      <div className={classes.dice} id="dice"></div>
     </div>
   );
 };

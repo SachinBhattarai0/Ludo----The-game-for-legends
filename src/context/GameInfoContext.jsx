@@ -22,7 +22,7 @@ let red = new TokensClass(
   null,
   null,
   null,
-  document.querySelectorAll(".red .innerp2")
+  'document.querySelectorAll(".red .innerp2")'
 );
 let green = new TokensClass(
   "green",
@@ -31,7 +31,7 @@ let green = new TokensClass(
   null,
   null,
   null,
-  document.querySelectorAll(".green .innerp2")
+  'document.querySelectorAll(".green .innerp2")'
 );
 let yellow = new TokensClass(
   "yellow",
@@ -40,7 +40,7 @@ let yellow = new TokensClass(
   null,
   null,
   null,
-  document.querySelectorAll(".yellow .innerp2")
+  'document.querySelectorAll(".yellow .innerp2")'
 );
 let blue = new TokensClass(
   "blue",
@@ -49,7 +49,7 @@ let blue = new TokensClass(
   null,
   null,
   null,
-  document.querySelectorAll(".blue .innerp2")
+  'document.querySelectorAll(".blue .innerp2")'
 );
 
 
