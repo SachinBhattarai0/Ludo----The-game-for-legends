@@ -6,61 +6,65 @@ class TokensClass {
   constructor(Color, NoOfHomes, token1, token2, token3, token4, parents) {
     this.Color = Color;
     this.NoOfHomes = NoOfHomes;
-    this.token1 = token1;
-    this.token2 = token2;
-    this.token3 = token3;
-    this.token4 = token4;
-    this.parents = parents;
+    this.tokenPositions = {
+      token1,
+      token2,
+      token3,
+      token4,
+    };
+    this.parentClass = parents;
   }
   // Methods
+  allTokenInside() {
+    const tokenPositions = Object.values(this.tokenPositions);
+    return tokenPositions.filter((tokenPosition) => tokenPosition != null)[0]
+      ? false
+      : true;
+  }
 }
 
-let red = new TokensClass(
-  "red",
+let Red = new TokensClass(
+  "Red",
   0,
   null,
   null,
   null,
   null,
-  'document.querySelectorAll(".red .innerp2")'
+  ".red .initial-token-container"
 );
-let green = new TokensClass(
-  "green",
+let Green = new TokensClass(
+  "Green",
   0,
   null,
   null,
   null,
   null,
-  'document.querySelectorAll(".green .innerp2")'
+  ".green .initial-token-container"
 );
-let yellow = new TokensClass(
-  "yellow",
+let Yellow = new TokensClass(
+  "Yellow",
   0,
   null,
   null,
   null,
   null,
-  'document.querySelectorAll(".yellow .innerp2")'
+  ".yellow .initial-token-container"
 );
-let blue = new TokensClass(
-  "blue",
+let Blue = new TokensClass(
+  "Blue",
   0,
   null,
   null,
   null,
   null,
-  'document.querySelectorAll(".blue .innerp2")'
+  ".blue .initial-token-container"
 );
-
-
 
 const GameInfoContextProvider = ({ children }) => {
-  // const [currentUserPoints,setCurrentUserPoints] = useState(null)//To store current point obtained by user
-
   const [GameInfo, setGameInfo] = useState({
-    turn: "red",
-    tokenInfo: { red, green, yellow, blue },
-    currentUserPoints:0,
+    turn: "Red",
+    tokenInfo: { Red, Green, Yellow, Blue },
+    currentUserPoints: 0,
   });
 
   return (

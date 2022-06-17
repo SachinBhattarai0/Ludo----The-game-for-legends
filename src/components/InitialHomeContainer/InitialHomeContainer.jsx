@@ -6,18 +6,10 @@ const HomeContainer = ({ color }) => {
   return (
     <div className={`initial-home-container ${color}`}>
       <div className="initial-home">
-        <div className={`initial-token-container ${color}`}>
-          <Token color={color} />
-        </div>
-        <div className={`initial-token-container ${color}`}>
-          <Token color={color} />
-        </div>
-        <div className={`initial-token-container ${color}`}>
-          <Token color={color} />
-        </div>
-        <div className={`initial-token-container ${color}`}>
-          <Token color={color} />
-        </div>
+        <div className={`initial-token-container ${color}`}></div>
+        <div className={`initial-token-container ${color}`}></div>
+        <div className={`initial-token-container ${color}`}></div>
+        <div className={`initial-token-container ${color}`}></div>
       </div>
     </div>
   );
