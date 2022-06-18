@@ -9,10 +9,11 @@
   color: white;
 }
 .dice {
+  padding: 4px;
   box-sizing: border-box;
   background: white;
-  height: 65px;
-  width: 65px;
+  height: 50px;
+  width: 50px;
   border-radius: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -26,8 +27,6 @@
   width: 13px;
   background: black;
   border-radius: 50%;
-  pointer-events: none;
-  margin: 1px;
 }
 @media screen and (max-width: 750px) {
   .dice-container p {

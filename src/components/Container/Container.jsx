@@ -7,10 +7,10 @@ import "./Container.css";
 const Container = () => {
   return (
     <div className="container">
-      <InitialHomeContainer color="Red" />
-      <InitialHomeContainer color="Green" />
-      <InitialHomeContainer color="Blue" />
-      <InitialHomeContainer color="Yellow" />
+      <InitialHomeContainer color="red" />
+      <InitialHomeContainer color="green" />
+      <InitialHomeContainer color="blue" />
+      <InitialHomeContainer color="yellow" />
 
       <FinalHomeContainer />
 

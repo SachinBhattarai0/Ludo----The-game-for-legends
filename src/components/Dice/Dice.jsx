@@ -1,40 +1,19 @@
 import React from "react";
-import { useGameInfo } from "../../context/GameInfoContext";
-import EnableTokens from "../../utils/EnableTokens";
-import "./Dice.css";
+// Used modular form to practice
+import classes from "./Dice.module.css";
 
 const Dice = () => {
-  const { GameInfo, setGameInfo, ShuffleTurn } = useGameInfo();
-  let { turn, tokenInfo } = GameInfo;
-
-  const generateNewRandomPoints = (e) => {
-    const randomPoints = Math.ceil(Math.random() * 6);
-    setGameInfo({ ...GameInfo, currentUserPoints: randomPoints });
-
-    generateDiceDots(randomPoints, e.target);
-
-    if (tokenInfo[turn].allTokenInside() && randomPoints !== 6) {
-      ShuffleTurn();
-    } else {
-      EnableTokens(turn, randomPoints);
-    }
-  };
-
-  const generateDiceDots = (noOfDots, target) => {
-    target.innerHTML = "";
-    for (let i = 0; i < noOfDots; i++) {
-      target.innerHTML += `<div class="dice-dot"></div>`;
-    }
-  };
-
   return (
-    <div className="dice-container">
-      <p>{turn}'s Turn</p>
-      <button
-        className="dice"
-        id="dice"
-        onClick={(e) => generateNewRandomPoints(e)}
-      ></button>
+    <div className={classes["dice-container"]}>
+      <p>Red's Turn</p>
+      <div className={classes.dice}>
+        <div className={classes["dice-dot"]}></div>
+        <div className={classes["dice-dot"]}></div>
+        <div className={classes["dice-dot"]}></div>
+        <div className={classes["dice-dot"]}></div>
+        <div className={classes["dice-dot"]}></div>
+        <div className={classes["dice-dot"]}></div>
+      </div>
     </div>
   );
 };

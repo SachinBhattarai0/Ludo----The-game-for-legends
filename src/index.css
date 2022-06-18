@@ -48,7 +48,7 @@ body {
   background: rgb(72, 72, 184);
 }
 .boxes.star {
-  background-image: url("./assets/star.svg");
+  background: url("./assets/star.svg");
   background-repeat: no-repeat;
   background-position: center;
 }
