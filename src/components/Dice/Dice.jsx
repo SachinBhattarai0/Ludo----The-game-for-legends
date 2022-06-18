@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useUserInfo } from "../../context/GameInfo";
-import { useTokenPositions } from "../../context/TokenPosition";
+import { useDiceActive } from "../../context/DiceActive";
 // Used modular form to practice
 import classes from "./Dice.module.css";
 
 const Dice = () => {
-  const [disableDice, setdisableDice] = useState(false);
-  const EnableOrDisableDice = () => setdisableDice(!disableDice);
-
-  const { isAllTokenInside } = useTokenPositions();
-
-  const { GameInfoState, rollDice, shuffleTurn } = useUserInfo();
+  const { EnableOrDisableDice, disableDice } = useDiceActive();
+  const { GameInfoState, rollDice } = useUserInfo();
   const { turn, points } = GameInfoState;
 
   const handleDiceClick = () => {
