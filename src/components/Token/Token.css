@@ -9,5 +9,5 @@
 
 .token:disabled {
   border-color: grey;
-  pointer-events: no;
+  pointer-events: none;
 }

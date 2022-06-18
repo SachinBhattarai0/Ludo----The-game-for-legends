@@ -1,81 +1,24 @@
 import React from "react";
+import { boxesClassList } from "./utils";
+import { useGameInfo } from "../../context/GameInfoContext";
+import Token from "../Token/Token";
 import "./Boxes.css";
 
 function Boxes() {
+  const { GameInfo } = useGameInfo();
+  const { tokenInfo, turn } = GameInfo;
+  const tokenAtIndexes = Object.values(tokenInfo[turn].tokenPositions).filter(
+    (item) => item != null
+  );
+
+  // reference for later at here
   return (
     <>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes green star"></div>
-      <div className="boxes green star"></div>
-      <div className="boxes star"></div>
-      <div className="boxes green star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes green star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes green star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes green star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes red star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes red star"></div>
-      <div className="boxes red star"></div>
-      <div className="boxes red star"></div>
-      <div className="boxes red star"></div>
-      <div className="boxes red star"></div>
-      <div className="boxes yellow star"></div>
-      <div className="boxes yellow star"></div>
-      <div className="boxes yellow star"></div>
-      <div className="boxes yellow star"></div>
-      <div className="boxes yellow star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes yellow star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes blue star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes blue star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes blue star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes blue star"></div>
-      <div className="boxes star"></div>
-      <div className="boxes blue star"></div>
-      <div className="boxes blue star"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
-      <div className="boxes"></div>
+      {boxesClassList.map((boxClass, i) => (
+        <div key={i} className={boxClass}>
+          {tokenAtIndexes.includes(i) && <Token color={turn.toLowerCase()} />}
+        </div>
+      ))}
     </>
   );
 }

@@ -1,8 +1,15 @@
 import React from "react";
+import { useGameInfo } from "../../context/GameInfoContext";
 import "./Token.css";
 
 const Token = ({ color }) => {
-  return <button disabled className={`token ${color}`}></button>;
+  const { GameInfo, setGameInfo, ShuffleTurn } = useGameInfo();
+
+  const handleTokenClick = () => {
+    console.log("tokenClicked");
+  };
+
+  return <button className={`token ${color}`} disabled></button>;
 };
 
 export default Token;

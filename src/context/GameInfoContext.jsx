@@ -67,8 +67,18 @@ const GameInfoContextProvider = ({ children }) => {
     currentUserPoints: 0,
   });
 
+  const ShuffleTurn = () => {
+    let { turn } = GameInfo;
+    if (turn === "Blue") turn = "Red";
+    if (turn === "Yellow") turn = "Blue";
+    if (turn === "Green") turn = "Yellow";
+    if (turn === "Red") turn = "Green";
+
+    setGameInfo({ ...GameInfo, turn });
+  };
+
   return (
-    <TokenContext.Provider value={{ GameInfo, setGameInfo }}>
+    <TokenContext.Provider value={{ GameInfo, setGameInfo, ShuffleTurn }}>
       {children}
     </TokenContext.Provider>
   );
