@@ -10,8 +10,18 @@ const TokenPositionProvider = ({ children }) => {
     Blue: [null, null, null, null],
   });
 
+  const isAllTokenInside = (color) => {
+    const noNullPositions = TokenPositions[color].filter(
+      (position) => position !== null
+    );
+    if (noNullPositions.length === 0) return true;
+    return false;
+  };
+
   return (
-    <TokenPosition.Provider value={{ TokenPositions, setTokenPositions }}>
+    <TokenPosition.Provider
+      value={{ TokenPositions, setTokenPositions, isAllTokenInside }}
+    >
       {children}
     </TokenPosition.Provider>
   );

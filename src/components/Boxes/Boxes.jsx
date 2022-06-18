@@ -1,11 +1,14 @@
 import React from "react";
 import { boxesClassList } from "./utils";
 import { useTokenPositions } from "../../context/TokenPosition";
+import { useUserInfo } from "../../context/GameInfo";
 import Token from "../Token/Token";
 import "./Boxes.css";
 
 function Boxes() {
   const { TokenPositions } = useTokenPositions();
+  const { GameInfoState } = useUserInfo();
+  const { turn, rolledDice } = GameInfoState;
 
   return (
     <>
@@ -16,7 +19,15 @@ function Boxes() {
             let keys = Object.keys(TokenPositions);
             itemPositions.forEach((position) => {
               position === i
-                ? arr.push(<Token color={keys[keyIndex]} />)
+                ? arr.push(
+                    <Token
+                      key={keyIndex}
+                      color={keys[keyIndex]}
+                      disable={
+                        turn === keys[keyIndex] && rolledDice ? false : true
+                      }
+                    />
+                  )
                 : arr.push("");
             });
             return arr;
