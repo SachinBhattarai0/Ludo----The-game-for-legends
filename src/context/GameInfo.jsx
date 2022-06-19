@@ -16,7 +16,6 @@ const GameInfoProvider = ({ children }) => {
     changedIdentifier: Math.random(),
   });
 
-  console.log("Note: After moving token shuffle turn");
   const rollDice = () => {
     const randomNumber = Math.ceil(Math.random() * 6);
     setGameInfoState({
@@ -42,14 +41,15 @@ const GameInfoProvider = ({ children }) => {
 
   const shuffleTurn = () => {
     const { turn } = GameInfoState;
-    if (turn === "Yellow")
-      setGameInfoState({ ...GameInfoState, turn: "Red", rolledDice: false });
-    if (turn === "Blue")
-      setGameInfoState({ ...GameInfoState, turn: "Yellow", rolledDice: false });
-    if (turn === "Green")
-      setGameInfoState({ ...GameInfoState, turn: "Blue", rolledDice: false });
-    if (turn === "Red")
+    if (turn === "Red") {
       setGameInfoState({ ...GameInfoState, turn: "Green", rolledDice: false });
+    } else if (turn === "Green") {
+      setGameInfoState({ ...GameInfoState, turn: "Yellow", rolledDice: false });
+    } else if (turn === "Yellow") {
+      setGameInfoState({ ...GameInfoState, turn: "Blue", rolledDice: false });
+    } else {
+      setGameInfoState({ ...GameInfoState, turn: "Red", rolledDice: false });
+    }
   };
 
   return (

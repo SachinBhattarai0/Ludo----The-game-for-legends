@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTokenPositions } from "../../context/TokenPosition";
 import { useUserInfo } from "../../context/GameInfo";
+import { useDiceActive } from "../../context/DiceActive";
 import { paths } from "../../utils/TokenPath";
 import "./Token.css";
 
 const Token = ({ color, disable = true, positionIndex }) => {
   const { TokenPositions, setTokenPositions } = useTokenPositions();
-  const { GameInfoState } = useUserInfo();
+  const { GameInfoState, shuffleTurn } = useUserInfo();
+  const { EnableOrDisableDice } = useDiceActive();
   const { points } = GameInfoState;
 
   const handleTokenClick = (positionIndex, color) => {
@@ -21,7 +23,6 @@ const Token = ({ color, disable = true, positionIndex }) => {
 
     const newActiveTokensPositions = CurrentActiveTokensPositions; //Copying current positions of token to new variable
     newActiveTokensPositions[positionIndex] = newTokenPosition; //Changing the previous position of token to new position
-    console.log(newActiveTokensPositions);
 
     // Setting new position
     setTokenPositions({
@@ -29,6 +30,14 @@ const Token = ({ color, disable = true, positionIndex }) => {
       [color]: newActiveTokensPositions,
     });
   };
+
+  // Not at first
+  useEffect(() => {
+    if (points != 0) {
+      shuffleTurn();
+      EnableOrDisableDice();
+    }
+  }, [TokenPositions]);
 
   return (
     <button
