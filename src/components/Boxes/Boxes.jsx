@@ -17,15 +17,16 @@ function Boxes() {
           {Object.values(TokenPositions).map((itemPositions, keyIndex) => {
             let arr = [];
             let keys = Object.keys(TokenPositions);
-            itemPositions.forEach((position) => {
+            itemPositions.forEach((position, positionIndex) => {
               position === i
                 ? arr.push(
                     <Token
-                      key={keyIndex}
+                      key={positionIndex}
                       color={keys[keyIndex]}
                       disable={
                         turn === keys[keyIndex] && rolledDice ? false : true
                       }
+                      positionIndex={positionIndex}
                     />
                   )
                 : arr.push("");

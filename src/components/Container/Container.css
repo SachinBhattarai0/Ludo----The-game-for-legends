@@ -17,14 +17,14 @@
 
 @media screen and (max-width: 750px) {
   .container {
-    height: 80vh;
+    height: 87vh;
     width: 85vw;
   }
 }
 
 @media screen and (max-width: 600px) {
   .container {
-    height: 70vh;
+    height: 75vh;
     width: 85vw;
   }
 }

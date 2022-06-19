@@ -12,9 +12,9 @@ const HomeContainer = ({ color }) => {
   return (
     <div className={`initial-home-container ${color.toLowerCase()}`}>
       <div className="initial-home">
-        {TokenPositions[color].map((position, i) => (
+        {TokenPositions[color].map((position, positionIndex) => (
           <div
-            key={i}
+            key={positionIndex}
             className={`initial-token-container ${color.toLowerCase()}`}
           >
             {position === null ? (
@@ -23,6 +23,7 @@ const HomeContainer = ({ color }) => {
                 disable={
                   turn === color && points === 6 && rolledDice ? false : true
                 }
+                positionIndex={positionIndex}
               />
             ) : (
               ""
