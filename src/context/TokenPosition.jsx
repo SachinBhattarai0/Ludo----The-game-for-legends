@@ -1,4 +1,5 @@
 import React, { useContext, useState, createContext } from "react";
+import { STARBOXINDEX } from "../components/Boxes/utils";
 
 const TokenPosition = createContext();
 
@@ -20,7 +21,7 @@ const TokenPositionProvider = ({ children }) => {
     const keys = Object.keys(positions);
     keys.forEach((key) => {
       const index = positions[key].indexOf(newTokenPosition);
-      if (index !== -1) {
+      if (index !== -1 && !STARBOXINDEX.includes(newTokenPosition)) {
         positions[key][index] = null;
       }
     });

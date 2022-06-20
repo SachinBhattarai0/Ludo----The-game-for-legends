@@ -72,3 +72,8 @@ export const boxesClassList = [
   "boxes",
   "boxes",
 ];
+
+export const STARBOXINDEX = boxesClassList.reduce((arr, val, index) => {
+  if (val.split(" ").includes("star")) arr.push(index);
+  return arr;
+}, []);
