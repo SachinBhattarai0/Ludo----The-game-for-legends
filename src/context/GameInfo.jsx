@@ -37,7 +37,7 @@ const GameInfoProvider = ({ children }) => {
         console.log("soundplay here");
         shuffleTurn();
         EnableOrDisableDice();
-      }, 750);
+      }, 500);
     }
   }, [GameInfoState.changedIdentifier]);
 

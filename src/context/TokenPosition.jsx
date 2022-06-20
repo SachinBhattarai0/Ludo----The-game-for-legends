@@ -7,14 +7,14 @@ const TokenPosition = createContext();
 
 const TokenPositionProvider = ({ children }) => {
   const [TokenPositions, setTokenPositions] = useState({
-    // Red: [null, null, null, null],
-    // Green: [null, null, null, null],
-    // Yellow: [null, null, null, null],
-    // Blue: [null, null, null, null],
-    Red: [31, 33, 34, 35],
-    Green: [1, 4, 7, 13],
-    Yellow: [36, 37, 38, 39],
-    Blue: [55, 58, 64, 70],
+    Red: [null, null, null, null],
+    Green: [null, null, null, null],
+    Yellow: [null, null, null, null],
+    Blue: [null, null, null, null],
+    // Red: [2, 33, 34, 15],
+    // Green: [5, 4, 7, 12],
+    // Yellow: [1, 9, 38, 39],
+    // Blue: [0, 6, 64, 70],
   });
 
   const checkForOut = (
@@ -53,7 +53,7 @@ const TokenPositionProvider = ({ children }) => {
 
     const checkPathAvailable = (pathIndex) => {
       const PositionValue = TokenPositions[color][pathIndex];
-      if (PositionValue === null && points === 6) return true;
+      if (PositionValue === null && points !== 6) return false;
       const index = paths[color].indexOf(PositionValue);
       if (paths[color][index + points] === undefined) return false;
       return true;
