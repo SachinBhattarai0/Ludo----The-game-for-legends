@@ -1,6 +1,6 @@
 .container {
   height: 95vh;
-  width: 45vw;
+  width: 95vh;
   background-color: white;
   display: grid;
   grid-template-columns: repeat(15, 1fr);
@@ -8,24 +8,10 @@
   border: 2px solid black;
 }
 
-@media screen and (max-width: 1600px) {
-  .container {
-    height: 95vh;
-    width: 60vw;
-  }
-}
-
-@media screen and (max-width: 1250px) {
-  .container {
-    height: 95vh;
-    width: 70vw;
-  }
-}
-
 @media screen and (max-width: 770px) {
   .container {
     height: 85vh;
-    width: 88vw;
+    width: 85vw;
   }
 }
 

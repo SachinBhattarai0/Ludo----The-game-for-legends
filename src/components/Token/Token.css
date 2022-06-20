@@ -9,5 +9,9 @@
 
 .token:disabled {
   border-color: grey;
-  pointer-events: no;
+}
+.final-home .token {
+  height: 20px;
+  width: 20px;
+  border: none;
 }
