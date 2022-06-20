@@ -8,7 +8,6 @@ const COLORS = ["Red", "Green", "Yellow", "Blue"];
 
 const FinalHomeContainer = () => {
   const { TokenPositions } = useTokenPositions();
-  console.log(TokenPositions);
   return (
     <div className="home">
       {COLORS.map((color, i) => {

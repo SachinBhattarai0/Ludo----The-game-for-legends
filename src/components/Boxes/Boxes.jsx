@@ -6,9 +6,9 @@ import Token from "../Token/Token";
 import "./Boxes.css";
 
 function Boxes() {
-  const { TokenPositions } = useTokenPositions();
+  const { TokenPositions, pathAvailable } = useTokenPositions();
   const { GameInfoState } = useUserInfo();
-  const { turn, rolledDice } = GameInfoState;
+  const { turn, rolledDice, points } = GameInfoState;
 
   return (
     <>
@@ -18,13 +18,18 @@ function Boxes() {
             let arr = [];
             let keys = Object.keys(TokenPositions);
             itemPositions.forEach((position, positionIndex) => {
+              const color = keys[keyIndex];
               position === i
                 ? arr.push(
                     <Token
                       key={positionIndex}
-                      color={keys[keyIndex]}
+                      color={color}
                       disable={
-                        turn === keys[keyIndex] && rolledDice ? false : true
+                        turn === color &&
+                        rolledDice &&
+                        pathAvailable(positionIndex, color, points)
+                          ? false
+                          : true
                       }
                       positionIndex={positionIndex}
                     />

@@ -6,8 +6,7 @@ const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
   const { EnableOrDisableDice } = useDiceActive();
-
-  const { isAllTokenInside } = useTokenPositions();
+  const { pathAvailable } = useTokenPositions();
 
   const [GameInfoState, setGameInfoState] = useState({
     turn: "Red",
@@ -28,14 +27,17 @@ const GameInfoProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // if points is not six and all token is inside
+    const { turn, points } = GameInfoState;
     if (
-      GameInfoState.points !== 0 &&
-      GameInfoState.points !== 6 &&
-      isAllTokenInside(GameInfoState.turn)
+      GameInfoState.points !== 0 && //So that code donotrun on first render
+      !pathAvailable("__all__", turn, points, true)
     ) {
-      shuffleTurn();
-      EnableOrDisableDice();
+      //Little delay for better user experience
+      setTimeout(() => {
+        console.log("soundplay here");
+        shuffleTurn();
+        EnableOrDisableDice();
+      }, 750);
     }
   }, [GameInfoState.changedIdentifier]);
 

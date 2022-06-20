@@ -14,6 +14,9 @@
   width: 20px;
   position: absolute;
   background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .final-home.red {
   margin-top: 24px;
