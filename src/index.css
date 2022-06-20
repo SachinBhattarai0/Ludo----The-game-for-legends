@@ -14,7 +14,7 @@ body {
   display: flex;
   align-items: center;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 770px) {
   #root {
     flex-direction: column;
   }
@@ -66,4 +66,12 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.animate {
+  animation: rotate 0.2s ease;
+}
+@keyframes rotate {
+  to {
+    transform: rotate3d(0, 1, 0, 1080deg);
+  }
 }

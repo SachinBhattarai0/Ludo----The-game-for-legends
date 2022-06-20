@@ -10,6 +10,24 @@ const TokenPositionProvider = ({ children }) => {
     Blue: [null, null, null, null],
   });
 
+  const checkForOut = (
+    positions,
+    newTokenPosition,
+    turn,
+    CurrentActiveTokensPositions
+  ) => {
+    delete positions[turn];
+    const keys = Object.keys(positions);
+    keys.forEach((key) => {
+      const index = positions[key].indexOf(newTokenPosition);
+      if (index !== -1) {
+        positions[key][index] = null;
+      }
+    });
+    positions[turn] = CurrentActiveTokensPositions;
+    return positions;
+  };
+
   const isAllTokenInside = (color) => {
     const noNullPositions = TokenPositions[color].filter(
       (position) => position !== null
@@ -20,7 +38,12 @@ const TokenPositionProvider = ({ children }) => {
 
   return (
     <TokenPosition.Provider
-      value={{ TokenPositions, setTokenPositions, isAllTokenInside }}
+      value={{
+        TokenPositions,
+        setTokenPositions,
+        isAllTokenInside,
+        checkForOut,
+      }}
     >
       {children}
     </TokenPosition.Provider>

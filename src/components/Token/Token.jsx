@@ -6,7 +6,8 @@ import { paths } from "../../utils/TokenPath";
 import "./Token.css";
 
 const Token = ({ color, disable = true, positionIndex }) => {
-  const { TokenPositions, setTokenPositions } = useTokenPositions();
+  const { TokenPositions, setTokenPositions, checkForOut } =
+    useTokenPositions();
   const { GameInfoState, shuffleTurn } = useUserInfo();
   const { EnableOrDisableDice } = useDiceActive();
   const { points } = GameInfoState;
@@ -21,19 +22,23 @@ const Token = ({ color, disable = true, positionIndex }) => {
         ? paths[color][0]
         : paths[color][paths[color].indexOf(tokenPositionValue) + points];
 
-    const newActiveTokensPositions = CurrentActiveTokensPositions; //Copying current positions of token to new variable
-    newActiveTokensPositions[positionIndex] = newTokenPosition; //Changing the previous position of token to new position
+    CurrentActiveTokensPositions[positionIndex] = newTokenPosition;
 
-    // Setting new position
+    //checkForOut check if any token is out and returns new positions for tokens
+    const newPositions = checkForOut(
+      TokenPositions,
+      newTokenPosition,
+      color,
+      CurrentActiveTokensPositions
+    );
+
     setTokenPositions({
-      ...TokenPositions,
-      [color]: newActiveTokensPositions,
+      ...newPositions,
     });
   };
 
-  // Not at first
   useEffect(() => {
-    if (points != 0) {
+    if (points !== 0) {
       shuffleTurn();
       EnableOrDisableDice();
     }

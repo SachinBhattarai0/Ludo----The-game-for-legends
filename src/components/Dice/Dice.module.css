@@ -2,8 +2,9 @@
   background: rgb(36, 33, 33);
   padding: 18px 0;
   border-radius: 5px;
-  margin-left: 1px;
+  margin: 1px;
   width: 7rem;
+  perspective: 700px;
 }
 .dice-container p {
   color: white;
@@ -23,6 +24,7 @@
   align-items: center;
   cursor: pointer;
   margin: auto;
+  transform-style: preserve-3d;
 }
 .dice-dot {
   height: 13px;

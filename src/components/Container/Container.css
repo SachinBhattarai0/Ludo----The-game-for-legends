@@ -8,6 +8,13 @@
   border: 2px solid black;
 }
 
+@media screen and (max-width: 1600px) {
+  .container {
+    height: 95vh;
+    width: 60vw;
+  }
+}
+
 @media screen and (max-width: 1250px) {
   .container {
     height: 95vh;
@@ -15,16 +22,16 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 770px) {
   .container {
-    height: 87vh;
-    width: 85vw;
+    height: 85vh;
+    width: 88vw;
   }
 }
 
 @media screen and (max-width: 600px) {
   .container {
     height: 75vh;
-    width: 85vw;
+    width: 98vw;
   }
 }
