@@ -1,17 +1,21 @@
 import React from "react";
 import Token from "../Token/Token";
-import "./InitialHomeContainer.css";
 import { useUserInfo } from "../../context/GameInfo";
 import { useTokenPositions } from "../../context/TokenPosition";
+import { useWinner } from "../../context/WinnerProvider";
+import "./InitialHomeContainer.css";
 
 const HomeContainer = ({ color }) => {
   const { TokenPositions } = useTokenPositions();
   const { GameInfoState } = useUserInfo();
   const { turn, points, rolledDice } = GameInfoState;
+  const { WinnerState } = useWinner();
 
   return (
     <div className={`initial-home-container ${color.toLowerCase()}`}>
       <div className="initial-home">
+        {WinnerState[color] ? <div>{WinnerState[color]} Winner</div> : ""}
+
         {TokenPositions[color]?.map((position, positionIndex) => (
           <div
             key={positionIndex}

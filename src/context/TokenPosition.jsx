@@ -2,6 +2,8 @@ import React, { useContext, useState, createContext } from "react";
 import { paths } from "../utils/TokenPath";
 import { STARBOXINDEX } from "../components/Boxes/utils";
 import { repetationsOf } from "../utils/countRepetions";
+import { useWinner } from "./WinnerProvider";
+import { getWinnerNo } from "../utils/getWinnerNo";
 
 const TokenPosition = createContext();
 
@@ -11,12 +13,12 @@ const TokenPositionProvider = ({ children }) => {
     Green: [null, null, null, null],
     Yellow: [null, null, null, null],
     Blue: [null, null, null, null],
-    // Red: [2, 6, 34, 15],
-    // Green: [4, 3, 10, 13],
-    // Yellow: [1, 4, 6, 39],
-    // Blue: [0, 5, 6, 70],
+    // Red: [31, "Home", "Home", "Home"],
+    // Green: [4, "Home", "Home", "Home"],
+    // Yellow: [36, "Home", "Home", "Home"],
+    // Blue: [55, "Home", "Home", "Home"],
   });
-  console.log(TokenPositions);
+  const { WinnerState, setWinnerState } = useWinner();
 
   const checkForOut = (
     positions,
@@ -49,8 +51,9 @@ const TokenPositionProvider = ({ children }) => {
       if (filtered_arr.length === 0) {
         delete positions[color];
         setTokenPositions(positions);
+        const winnerNo = getWinnerNo(WinnerState);
+        setWinnerState({ ...WinnerState, [color]: winnerNo });
       }
-      console.log("Show winner");
     });
   };
 

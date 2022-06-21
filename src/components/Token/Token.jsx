@@ -8,7 +8,7 @@ import "./Token.css";
 const Token = ({ color, disable = true, positionIndex }) => {
   const { TokenPositions, setTokenPositions, checkForOut, checkForHome } =
     useTokenPositions();
-  const { GameInfoState, shuffleTurn } = useUserInfo();
+  const { GameInfoState, setGameInfoState, shuffleTurn } = useUserInfo();
   const { EnableOrDisableDice } = useDiceActive();
   const { points } = GameInfoState;
 
@@ -40,9 +40,12 @@ const Token = ({ color, disable = true, positionIndex }) => {
   };
 
   useEffect(() => {
-    if (points !== 0) {
+    if (points !== 0 && points !== 6) {
       shuffleTurn();
       EnableOrDisableDice();
+    } else if (points !== 0 && points === 6) {
+      EnableOrDisableDice();
+      setGameInfoState({ ...GameInfoState, rolledDice: false });
     }
   }, [TokenPositions]);
 
