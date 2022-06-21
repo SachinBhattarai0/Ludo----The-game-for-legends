@@ -11,10 +11,10 @@ const TokenPositionProvider = ({ children }) => {
     Green: [null, null, null, null],
     Yellow: [null, null, null, null],
     Blue: [null, null, null, null],
-    // Red: [2, 33, 34, 15],
-    // Green: [5, 4, "Home", 12],
-    // Yellow: [1, 9, 38, 39],
-    // Blue: [0, 6, 64, 70],
+    // Red: [2, 6, 34, 15],
+    // Green: [4, 3, 10, 13],
+    // Yellow: [1, 4, 6, 39],
+    // Blue: [0, 5, 6, 70],
   });
   console.log(TokenPositions);
 
@@ -38,6 +38,20 @@ const TokenPositionProvider = ({ children }) => {
     });
     positions[turn] = CurrentActiveTokensPositions;
     return positions;
+  };
+
+  const checkForHome = (positions) => {
+    const colors = Object.keys(positions);
+    colors.forEach((color) => {
+      const filtered_arr = positions[color].filter(
+        (position) => position !== "Home"
+      );
+      if (filtered_arr.length === 0) {
+        delete positions[color];
+        setTokenPositions(positions);
+      }
+      console.log("Show winner");
+    });
   };
 
   const isAllTokenInside = (color) => {
@@ -66,7 +80,6 @@ const TokenPositionProvider = ({ children }) => {
     // When checking is to be done for array of positions
     if (many) {
       const arr = positionIndex.map((item) => checkPathAvailable(item));
-
       if (repetationsOf(false, arr) === 4) return false;
       return true;
     }
@@ -83,6 +96,7 @@ const TokenPositionProvider = ({ children }) => {
         isAllTokenInside,
         checkForOut,
         pathAvailable,
+        checkForHome,
       }}
     >
       {children}

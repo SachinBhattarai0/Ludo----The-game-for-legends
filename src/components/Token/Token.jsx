@@ -6,13 +6,13 @@ import { paths } from "../../utils/TokenPath";
 import "./Token.css";
 
 const Token = ({ color, disable = true, positionIndex }) => {
-  const { TokenPositions, setTokenPositions, checkForOut } =
+  const { TokenPositions, setTokenPositions, checkForOut, checkForHome } =
     useTokenPositions();
   const { GameInfoState, shuffleTurn } = useUserInfo();
   const { EnableOrDisableDice } = useDiceActive();
   const { points } = GameInfoState;
 
-  const handleTokenClick = (positionIndex, color) => {
+  const moveToken = (positionIndex, color) => {
     const CurrentActiveTokensPositions = TokenPositions[color];
     const tokenPositionValue = CurrentActiveTokensPositions[positionIndex];
 
@@ -32,6 +32,8 @@ const Token = ({ color, disable = true, positionIndex }) => {
       CurrentActiveTokensPositions
     );
 
+    checkForHome(newPositions);
+
     setTokenPositions({
       ...newPositions,
     });
@@ -48,7 +50,7 @@ const Token = ({ color, disable = true, positionIndex }) => {
     <button
       disabled={disable}
       className={`token ${color.toLowerCase()}`}
-      onClick={() => handleTokenClick(positionIndex, color)}
+      onClick={() => moveToken(positionIndex, color)}
     ></button>
   );
 };
