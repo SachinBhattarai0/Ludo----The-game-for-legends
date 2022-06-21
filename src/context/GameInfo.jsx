@@ -6,7 +6,7 @@ const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
   const { EnableOrDisableDice } = useDiceActive();
-  const { pathAvailable } = useTokenPositions();
+  const { pathAvailable, TokenPositions } = useTokenPositions();
 
   const [GameInfoState, setGameInfoState] = useState({
     turn: "Red",
@@ -29,8 +29,8 @@ const GameInfoProvider = ({ children }) => {
   useEffect(() => {
     const { turn, points } = GameInfoState;
     if (
-      GameInfoState.points !== 0 && //So that code donotrun on first render
-      !pathAvailable("__all__", turn, points, true)
+      GameInfoState.points !== 0 && //does not run on first render
+      !pathAvailable("__all__", turn, points)
     ) {
       //Little delay for better user experience
       setTimeout(() => {
@@ -43,15 +43,11 @@ const GameInfoProvider = ({ children }) => {
 
   const shuffleTurn = () => {
     const { turn } = GameInfoState;
-    if (turn === "Red") {
-      setGameInfoState({ ...GameInfoState, turn: "Green", rolledDice: false });
-    } else if (turn === "Green") {
-      setGameInfoState({ ...GameInfoState, turn: "Yellow", rolledDice: false });
-    } else if (turn === "Yellow") {
-      setGameInfoState({ ...GameInfoState, turn: "Blue", rolledDice: false });
-    } else {
-      setGameInfoState({ ...GameInfoState, turn: "Red", rolledDice: false });
-    }
+    const allTurns = Object.keys(TokenPositions);
+    const indexOfTurn = allTurns.indexOf(turn);
+
+    const newTurn = allTurns[indexOfTurn + 1] || allTurns[0];
+    setGameInfoState({ ...GameInfoState, turn: newTurn, rolledDice: false });
   };
 
   return (

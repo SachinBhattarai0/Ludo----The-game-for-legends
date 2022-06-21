@@ -12,10 +12,11 @@ const TokenPositionProvider = ({ children }) => {
     Yellow: [null, null, null, null],
     Blue: [null, null, null, null],
     // Red: [2, 33, 34, 15],
-    // Green: [5, 4, 7, 12],
+    // Green: [5, 4, "Home", 12],
     // Yellow: [1, 9, 38, 39],
     // Blue: [0, 6, 64, 70],
   });
+  console.log(TokenPositions);
 
   const checkForOut = (
     positions,
@@ -49,7 +50,10 @@ const TokenPositionProvider = ({ children }) => {
 
   const pathAvailable = (positionIndex, color, points, many = false) => {
     if (points === 0) return true;
-    if (positionIndex === "__all__") positionIndex = [0, 1, 2, 3];
+    if (positionIndex === "__all__") {
+      positionIndex = [0, 1, 2, 3];
+      many = true;
+    }
 
     const checkPathAvailable = (pathIndex) => {
       const PositionValue = TokenPositions[color][pathIndex];

@@ -12,7 +12,7 @@ const HomeContainer = ({ color }) => {
   return (
     <div className={`initial-home-container ${color.toLowerCase()}`}>
       <div className="initial-home">
-        {TokenPositions[color].map((position, positionIndex) => (
+        {TokenPositions[color]?.map((position, positionIndex) => (
           <div
             key={positionIndex}
             className={`initial-token-container ${color.toLowerCase()}`}

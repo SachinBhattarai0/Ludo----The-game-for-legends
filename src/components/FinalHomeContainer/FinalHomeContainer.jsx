@@ -11,13 +11,13 @@ const FinalHomeContainer = () => {
   return (
     <div className="home">
       {COLORS.map((color, i) => {
+        let noOfTokenInHome = repetationsOf("Home", TokenPositions[color]);
+        if (noOfTokenInHome === undefined) noOfTokenInHome = 4;
         return (
           <div key={i} className={`final-home ${color.toLowerCase()}`}>
-            {[...Array(repetationsOf("Home", TokenPositions[color]))].map(
-              (_, i) => (
-                <Token key={i} disable={true} color={color} />
-              )
-            )}
+            {[...Array(noOfTokenInHome)].map((_, i) => (
+              <Token key={i} disable={true} color={color} />
+            ))}
           </div>
         );
       })}
