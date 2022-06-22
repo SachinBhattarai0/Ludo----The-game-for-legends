@@ -74,3 +74,6 @@ code {
     transform: rotate3d(0, 1, 0, 1080deg);
   }
 }
+.error {
+  color: red;
+}

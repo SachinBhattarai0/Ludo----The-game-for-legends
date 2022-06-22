@@ -7,7 +7,9 @@
 }
 .room-container h3 {
   text-align: center;
+  margin: 0;
 }
+
 table td,
 table th {
   padding: 5px 15px;
@@ -19,6 +21,10 @@ table th {
   width: 20px;
   border: 1px solid black;
 }
-.room-container button {
+select {
   margin-top: 8px;
+  padding: 5px 0;
+}
+select:focus {
+  outline: none;
 }

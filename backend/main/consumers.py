@@ -1,9 +1,11 @@
+import json
 from channels.generic.websocket import WebsocketConsumer
 
-class main_consumer(WebsocketConsumer):
+class room_consumer(WebsocketConsumer):
     def connect(self):
         self.accept()
-        self.send(text_data="Connected Successfully")
+        self.send(json.dumps({'message':'Connected Successfully'}))
+        
 
 
     def receive(self, text_data=None, bytes_data=None):
