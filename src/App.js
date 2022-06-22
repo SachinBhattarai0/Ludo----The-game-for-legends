@@ -1,15 +1,19 @@
-import React, { useEffect } from "react";
-import Container from "./components/Container/Container";
-import Dice from "./components/Dice/Dice";
-import setHome from "./utils/setHome";
+import React from "react";
+import NavBar from "./components/NavBar/NavBar";
+import HomePage from "./components/Pages/HomePage";
+import Game from "./components/Pages/Game/Game";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  useEffect(setHome, []);
-
   return (
     <>
-      <Container />
-      <Dice />
+      <Routes>
+        <Route path="/" element={<NavBar />}>
+          <Route index element={<HomePage />} />
+        </Route>
+
+        <Route path="/game/:gameId/" element={<Game />} />
+      </Routes>
     </>
   );
 }

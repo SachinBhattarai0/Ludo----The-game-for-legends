@@ -4,15 +4,6 @@ body {
     "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: royalblue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-#root {
-  display: flex;
-  align-items: center;
 }
 @media screen and (max-width: 770px) {
   #root {

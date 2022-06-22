@@ -5,7 +5,7 @@ import { useTokenPositions } from "../../context/TokenPosition";
 import { useWinner } from "../../context/WinnerProvider";
 import "./InitialHomeContainer.css";
 
-const HomeContainer = ({ color }) => {
+const InitialHomeContainer = ({ color }) => {
   const { TokenPositions } = useTokenPositions();
   const { GameInfoState } = useUserInfo();
   const { turn, points, rolledDice } = GameInfoState;
@@ -39,4 +39,4 @@ const HomeContainer = ({ color }) => {
   );
 };
 
-export default HomeContainer;
+export default InitialHomeContainer;

@@ -7,14 +7,16 @@ import "./Container.css";
 const Container = () => {
   return (
     <div className="container">
-      <InitialHomeContainer color="Red" />
-      <InitialHomeContainer color="Green" />
-      <InitialHomeContainer color="Blue" />
-      <InitialHomeContainer color="Yellow" />
+      <div className="gamePad">
+        <InitialHomeContainer color="Red" />
+        <InitialHomeContainer color="Green" />
+        <InitialHomeContainer color="Blue" />
+        <InitialHomeContainer color="Yellow" />
 
-      <FinalHomeContainer />
+        <FinalHomeContainer />
 
-      <Boxes />
+        <Boxes />
+      </div>
     </div>
   );
 };
