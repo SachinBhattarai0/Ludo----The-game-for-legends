@@ -3,6 +3,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .serializers import RoomSerializer
 from .models import Room
+from .utils import changeUserInDatabase,setDisconnectingUserToNoneInDatabase
 
 class room_consumer(WebsocketConsumer):
     def connect(self):
@@ -14,23 +15,11 @@ class room_consumer(WebsocketConsumer):
 
         room = Room.objects.get(name=self.room_group_name)
         if not room.nameExists(self.user_name):
-            if not room.red:
-                room.red = self.user_name
-                self.color = 'red'
-            elif not room.green:
-                room.green = self.user_name
-                self.color = 'green'
-            elif not room.yellow:
-                room.yellow = self.user_name
-                self.color = 'yellow'
-            elif not room.blue:
-                room.blue = self.user_name
-                self.color = 'blue'
-            room.save()
-        
+            room,userColor = changeUserInDatabase(self.room_group_name,self.user_name)
+            self.color = userColor
+
             user_list = RoomSerializer(room).data
             async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-joined','user-list':user_list}) 
-
 
 
     def receive(self, text_data=None, bytes_data=None):
@@ -38,16 +27,8 @@ class room_consumer(WebsocketConsumer):
 
 
     def disconnect(self, close_code):
-        room = Room.objects.get(name=self.room_group_name)
-        if self.color == 'red':
-            room.red = None
-        if self.color == 'green':
-            room.green = None
-        if self.color == 'yellow':
-            room.yellow = None
-        if self.color == 'blue':
-            room.blue = None
-        room.save()
+
+        room = setDisconnectingUserToNoneInDatabase(self.room_group_name,self.color)
 
         user_list = RoomSerializer(room).data
         async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-joined','user-list':user_list}) 
