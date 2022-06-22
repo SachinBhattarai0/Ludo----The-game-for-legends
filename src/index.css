@@ -4,7 +4,14 @@ body {
     "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
+:root {
+  --text-color: rgb(51, 47, 47);
+  --primary: #f2f2f2;
+  --secondary: #ffffff;
+}
+
 @media screen and (max-width: 770px) {
   #root {
     flex-direction: column;
