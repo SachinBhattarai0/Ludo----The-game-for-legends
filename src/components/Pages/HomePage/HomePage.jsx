@@ -12,10 +12,10 @@ const HomePage = () => {
   const handleClick = async (e, mode) => {
     e.preventDefault();
     const { name, roomName, password } = value;
-    let res = await createOrVerify(mode, roomName, password);
+    let res = await createOrVerify(mode, roomName, password, name);
     res = await res.json();
     if (res.success) {
-      navigate(`/room/${roomName}/`, { userName: name });
+      navigate(`/room/${roomName}/`, { state: { userName: name } });
     }
     setError(res.message);
   };

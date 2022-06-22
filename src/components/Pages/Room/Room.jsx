@@ -1,15 +1,24 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { WEBSOCKET_URL } from "../../../api/url";
 import "./Room.css";
 
 const Room = () => {
   const { roomName } = useParams();
+  const location = useLocation();
+
+  const [usersOnRoom, setUsersOnRoom] = useState({});
 
   useEffect(() => {
-    const Socket = new WebSocket(`${WEBSOCKET_URL}/room/${roomName}/`);
+    const Socket = new WebSocket(
+      `${WEBSOCKET_URL}/room/${roomName}/${location.state.userName}/`
+    );
     Socket.onmessage = ({ data }) => {
       data = JSON.parse(data);
+      console.log(data);
+
+      if (data["data-type"] === "user-joined")
+        setUsersOnRoom({ ...data["user-list"] });
     };
   }, []);
 
@@ -23,30 +32,14 @@ const Room = () => {
             <th>Player's Name</th>
             <th>Color</th>
           </tr>
-          <tr>
-            <td>Sachin</td>
-            <td>
-              <div className="color-sample red"></div>
-            </td>
-          </tr>
-          <tr>
-            <td>Suban</td>
-            <td>
-              <div className="color-sample green"></div>
-            </td>
-          </tr>
-          <tr>
-            <td>Niraj</td>
-            <td>
-              <div className="color-sample yellow"></div>
-            </td>
-          </tr>
-          <tr>
-            <td>Aditya</td>
-            <td>
-              <div className="color-sample blue"></div>
-            </td>
-          </tr>
+          {Object.keys(usersOnRoom).map((userColor) => (
+            <tr key={userColor}>
+              <td>{usersOnRoom[userColor]}</td>
+              <td>
+                <div className={`color-sample ${userColor}`}></div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <select name="">

@@ -1,6 +1,6 @@
 import { URL } from "./url";
 
-const createOrVerify = async (mode, roomName, password) => {
+const createOrVerify = async (mode, roomName, password, name) => {
   const res = await fetch(`${URL}/create-or-verify/`, {
     headers: {
       "Content-Type": "application/json",
@@ -10,6 +10,7 @@ const createOrVerify = async (mode, roomName, password) => {
       mode,
       roomName,
       password,
+      name,
     }),
   });
   return res;

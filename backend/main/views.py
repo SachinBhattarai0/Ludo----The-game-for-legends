@@ -10,15 +10,16 @@ def CreateOrVerify(request):
     data = request.data
     roomName = data['roomName']
     password = data['password']
+    userName = data['name']
     
     if not roomName or not password:
         context['message'] = 'Bad roomName or Password'
         return Response(context)
 
-    room_exists = Room.objects.filter(name=roomName).exists()
+    room = Room.objects.filter(name=roomName)
     
     if data['mode'] == 'create':
-        if room_exists:
+        if room.exists():
             context['message'] = 'Room Already Exists'
             return Response(context)
         new_room = Room.objects.create(name=roomName,password=password)
@@ -28,8 +29,14 @@ def CreateOrVerify(request):
         return Response(context)
 
     #When mode is join    
-    if not room_exists:
+    if not room.exists():
         context['message'] = 'Room doesnot exists'
+        return Response(context)
+    if room[0].roomFull():
+        context['message'] = 'Room is full'
+        return Response(context)
+    if room[0].nameExists(userName):
+        context['message'] = 'Name already exists'
         return Response(context)
 
     is_password_correct = Room.objects.filter(name=roomName,password=password).exists()
