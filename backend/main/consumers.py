@@ -19,19 +19,21 @@ class room_consumer(WebsocketConsumer):
             self.color = userColor
 
             user_list = RoomSerializer(room).data
-            async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-joined','user-list':user_list}) 
+            async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-joined-or-disconnected','data':user_list}) 
 
 
-    def receive(self, text_data=None, bytes_data=None):
-        self.send(text_data="Hello world!")
+    def receive(self, text_data):
+        data = json.loads(text_data)
+
+        if(data['data-type']=='user-change-color'):
+             async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-change-color','data':data['newState']})
 
 
     def disconnect(self, close_code):
-
         room = setDisconnectingUserToNoneInDatabase(self.room_group_name,self.color)
 
         user_list = RoomSerializer(room).data
-        async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-joined','user-list':user_list}) 
+        async_to_sync(self.channel_layer.group_send)(self.room_group_name,{'type':'broadcast','data-type':'user-joined-or-disconnected','data':user_list}) 
 
         if room.noOfUserInRoom() == 0:
             room.delete()
@@ -40,5 +42,5 @@ class room_consumer(WebsocketConsumer):
     def broadcast(self,event):
         self.send(json.dumps({
             'data-type':event['data-type'],
-            'user-list':event['user-list'],
+            'data':event['data'],
         }))

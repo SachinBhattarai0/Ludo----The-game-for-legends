@@ -1,21 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import createOrVerify from "../../../api/createOrVerify";
+import postRequest from "../../../api/postRequest";
 import "./HomePage.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const [value, setValue] = useState({ name: "", roomName: "", password: "" });
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    roomName: "",
+    password: "",
+  });
   const [error, setError] = useState("");
 
   const handleClick = async (e, mode) => {
     e.preventDefault();
-    const { name, roomName, password } = value;
-    let res = await createOrVerify(mode, roomName, password, name);
+    let res = await postRequest("create-or-verify/", { mode, ...inputValue });
     res = await res.json();
     if (res.success) {
-      navigate(`/room/${roomName}/`, { state: { userName: name } });
+      navigate(`/room/${inputValue.roomName}/`, {
+        state: { userName: inputValue.name },
+      });
     }
     setError(res.message);
   };
@@ -27,23 +32,25 @@ const HomePage = () => {
       <form action="">
         <input
           placeholder="Enter room name"
-          value={value.roomName}
+          value={inputValue.roomName}
           onChange={({ target }) =>
-            setValue({ ...value, roomName: target.value })
+            setInputValue({ ...inputValue, roomName: target.value })
           }
         />
         <input
           type="password"
           placeholder="Enter room password"
-          value={value.password}
+          value={inputValue.password}
           onChange={({ target }) =>
-            setValue({ ...value, password: target.value })
+            setInputValue({ ...inputValue, password: target.value })
           }
         />
         <input
           placeholder="Enter Your name"
-          value={value.name}
-          onChange={({ target }) => setValue({ ...value, name: target.value })}
+          value={inputValue.name}
+          onChange={({ target }) =>
+            setInputValue({ ...inputValue, name: target.value })
+          }
         />
         <button onClick={(e) => handleClick(e, "join")}>JoinRoom</button>
         <button onClick={(e) => handleClick(e, "create")}>CreateRoom</button>

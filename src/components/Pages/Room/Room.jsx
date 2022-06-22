@@ -3,24 +3,41 @@ import { useParams, useLocation } from "react-router-dom";
 import { WEBSOCKET_URL } from "../../../api/url";
 import "./Room.css";
 
+var Socket;
 const Room = () => {
   const { roomName } = useParams();
   const location = useLocation();
+  const myUserName = location.state.userName;
 
   const [usersOnRoom, setUsersOnRoom] = useState({});
 
   useEffect(() => {
-    const Socket = new WebSocket(
-      `${WEBSOCKET_URL}/room/${roomName}/${location.state.userName}/`
-    );
+    Socket = new WebSocket(`${WEBSOCKET_URL}/room/${roomName}/${myUserName}/`);
     Socket.onmessage = ({ data }) => {
       data = JSON.parse(data);
       console.log(data);
 
-      if (data["data-type"] === "user-joined")
-        setUsersOnRoom({ ...data["user-list"] });
+      if (
+        data["data-type"] === "user-joined-or-disconnected" ||
+        data["data-type"] === "user-change-color"
+      )
+        setUsersOnRoom({ ...data["data"] });
     };
   }, []);
+
+  const handleUserColorChange = ({ target }) => {
+    const newValue = target.value;
+    const user = usersOnRoom[newValue];
+
+    const [myPrevValue, _] = Object.entries(usersOnRoom).find(
+      (keyValue) => keyValue[1] === myUserName
+    );
+
+    let newState = { ...usersOnRoom, [newValue]: myUserName };
+    newState = { ...newState, [myPrevValue]: user };
+    // console.log(Socket);
+    Socket.send(JSON.stringify({ "data-type": "user-change-color", newState }));
+  };
 
   return (
     <div className="room-container">
@@ -42,8 +59,9 @@ const Room = () => {
           ))}
         </tbody>
       </table>
-      <select name="">
-        <option value="">--- PickColor ---</option>
+
+      <select onChange={(e) => handleUserColorChange(e)}>
+        <option value="">---- PickColor ----</option>
         <option value="red">Red</option>
         <option value="green">Green</option>
         <option value="yellow">Yellow</option>
