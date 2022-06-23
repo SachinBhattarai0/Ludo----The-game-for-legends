@@ -5,7 +5,7 @@ import { useTokenPositions } from "../../context/TokenPosition";
 import { useWinner } from "../../context/WinnerProvider";
 import "./InitialHomeContainer.css";
 
-const InitialHomeContainer = ({ color }) => {
+const InitialHomeContainer = ({ color, myColor }) => {
   const { TokenPositions } = useTokenPositions();
   const { GameInfoState } = useUserInfo();
   const { turn, points, rolledDice } = GameInfoState;
@@ -25,7 +25,12 @@ const InitialHomeContainer = ({ color }) => {
               <Token
                 color={color}
                 disable={
-                  turn === color && points === 6 && rolledDice ? false : true
+                  turn.toLowerCase() === myColor &&
+                  turn === color &&
+                  points === 6 &&
+                  rolledDice
+                    ? false
+                    : true
                 }
                 positionIndex={positionIndex}
               />

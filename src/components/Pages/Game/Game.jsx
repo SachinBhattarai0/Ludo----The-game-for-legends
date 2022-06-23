@@ -3,6 +3,7 @@ import Dice from "../../Dice/Dice";
 import setHome from "../../../utils/setHome";
 import InitialHomeContainer from "../../InitialHomeContainer/InitialHomeContainer";
 import FinalHomeContainer from "../../FinalHomeContainer/FinalHomeContainer";
+import { useUserInfo } from "../../../context/GameInfo";
 import Boxes from "../../Boxes/Boxes";
 import { useLocation, useParams } from "react-router-dom";
 import { useWebSocket } from "../../../context/WebsocketProvider";
@@ -14,6 +15,7 @@ function Game() {
   const location = useLocation();
   const { gameId } = useParams();
   const { webSocket, setGameId } = useWebSocket();
+  const { GameInfoState, setGameInfoState } = useUserInfo();
 
   const {
     data: { beginedBy, usersOnRoom },
@@ -29,22 +31,37 @@ function Game() {
       setGameId(gameId);
       return;
     }
-
     webSocket.onmessage = ({ data }) => {
       data = JSON.parse(data);
-      console.log(data);
+      const { response } = data;
+      // console.log(data);
+      console.log(response);
+
+      if (data["data-type"] === "initialize-game")
+        setGameInfoState({ ...response });
+      if (response["data-type"] === "user-rolled-dice")
+        setGameInfoState({
+          ...response.data,
+        });
+      if (response["data-type"] === "shuffle-turn")
+        setGameInfoState({
+          ...GameInfoState,
+          ...response.data,
+        });
     };
   }, [webSocket]);
+
+  useEffect(() => console.log(GameInfoState), [GameInfoState]);
 
   // console.log(gameId, beginedBy, usersOnRoom, myUserName, myColor);
   console.log("my infos", myUserName, myColor);
   return (
     <div className="container">
       <div className="gamePad">
-        <InitialHomeContainer color="Red" />
-        <InitialHomeContainer color="Green" />
-        <InitialHomeContainer color="Blue" />
-        <InitialHomeContainer color="Yellow" />
+        <InitialHomeContainer myColor={myColor} color="Red" />
+        <InitialHomeContainer myColor={myColor} color="Green" />
+        <InitialHomeContainer myColor={myColor} color="Blue" />
+        <InitialHomeContainer myColor={myColor} color="Yellow" />
 
         <FinalHomeContainer />
 

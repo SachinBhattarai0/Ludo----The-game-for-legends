@@ -1,16 +1,30 @@
 import React, { useState } from "react";
 import { useUserInfo } from "../../context/GameInfo";
-// Used modular form to practice
+import { useWebSocket } from "../../context/WebsocketProvider";
 import classes from "./Dice.module.css";
 
 const Dice = ({ myColor }) => {
   const [animate, setAnimate] = useState(false);
-  const { GameInfoState, rollDice } = useUserInfo();
+  const { GameInfoState } = useUserInfo();
   const { turn, points } = GameInfoState;
+  const { webSocket } = useWebSocket();
 
   const handleDiceClick = () => {
-    animateDice();
-    rollDice();
+    // animateDice();
+    console.log("animateDice");
+    const randomNumber = Math.ceil(Math.random() * 6);
+    console.log(GameInfoState, "asdfasfsdf");
+    webSocket.send(
+      JSON.stringify({
+        "data-type": "user-rolled-dice",
+        data: {
+          ...GameInfoState,
+          points: randomNumber,
+          rolledDice: true,
+          changedIdentifier: Math.random(),
+        },
+      })
+    );
   };
 
   const animateDice = () => {
@@ -22,7 +36,9 @@ const Dice = ({ myColor }) => {
     <div className={classes["dice-container"]}>
       <p>{turn}'s Turn</p>
       <div
-        style={{ pointerEvents: myColor === turn ? "none" : "all" }}
+        style={{
+          pointerEvents: myColor === turn.toLowerCase() ? "all" : "none",
+        }}
         className={`${classes.dice}${animate ? " animate" : ""}`}
         onClick={handleDiceClick}
       >
