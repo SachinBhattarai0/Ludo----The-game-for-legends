@@ -18,10 +18,10 @@ const Room = () => {
 
     Socket.onmessage = ({ data }) => {
       let res = JSON.parse(data);
-      console.log(res);
 
       if (!res.error && res["data-type"] === "begin-game") {
         const { gameId } = res;
+        Socket.close();
         navigate(`/game/${gameId}/`, {
           state: { gameId, data: res.data, myUserName },
         });

@@ -43,5 +43,6 @@ class room_consumer(WebsocketConsumer):
             room.delete()
             async_to_sync(self.channel_layer.group_discard)(self.room_group_name, self.channel_name)
 
+
     def broadcast(self,event):
         self.send(json.dumps(event))
