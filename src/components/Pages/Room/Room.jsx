@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { WEBSOCKET_URL } from "../../../api/url";
 import "./Room.css";
 
 var Socket;
 const Room = () => {
+  const navigate = useNavigate();
   const { roomName } = useParams();
   const location = useLocation();
   const myUserName = location.state.userName;
 
   const [usersOnRoom, setUsersOnRoom] = useState({});
+  const [error, setError] = useState("");
 
   useEffect(() => {
     Socket = new WebSocket(`${WEBSOCKET_URL}/room/${roomName}/${myUserName}/`);
-    Socket.onmessage = ({ data }) => {
-      data = JSON.parse(data);
-      console.log(data);
 
-      if (
-        data["data-type"] === "user-joined-or-disconnected" ||
-        data["data-type"] === "user-change-color"
-      )
-        setUsersOnRoom({ ...data["data"] });
+    Socket.onmessage = ({ data }) => {
+      let res = JSON.parse(data);
+      console.log(res);
+
+      if (!res.error && res["data-type"] === "begin-game") {
+        const { gameId } = res;
+        navigate(`/game/${gameId}/`, {
+          state: { gameId, data: res.data, myUserName },
+        });
+      } else if (!res.error) setUsersOnRoom({ ...res.data });
     };
   }, []);
 
@@ -35,8 +39,25 @@ const Room = () => {
 
     let newState = { ...usersOnRoom, [newValue]: myUserName };
     newState = { ...newState, [myPrevValue]: user };
-    // console.log(Socket);
-    Socket.send(JSON.stringify({ "data-type": "user-change-color", newState }));
+
+    Socket.send(
+      JSON.stringify({ "data-type": "user-change-color", data: newState })
+    );
+  };
+
+  const beginGame = () => {
+    const nullUserIndex = Object.values(usersOnRoom).findIndex(
+      (user) => user === null
+    );
+
+    if (nullUserIndex < 0)
+      Socket.send(
+        JSON.stringify({
+          "data-type": "begin-game",
+          data: { usersOnRoom, beginedBy: myUserName },
+        })
+      );
+    else setError("All users not in the room");
   };
 
   return (
@@ -59,6 +80,7 @@ const Room = () => {
           ))}
         </tbody>
       </table>
+      <div className="error">{error}</div>
 
       <select onChange={(e) => handleUserColorChange(e)}>
         <option value="">---- PickColor ----</option>
@@ -67,7 +89,7 @@ const Room = () => {
         <option value="yellow">Yellow</option>
         <option value="blue">Blue</option>
       </select>
-      <button>Begin Game</button>
+      <button onClick={beginGame}>Begin Game</button>
     </div>
   );
 };

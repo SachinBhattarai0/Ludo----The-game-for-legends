@@ -25,11 +25,11 @@ def setDisconnectingUserToNoneInDatabase(room_group_name,color):
     room = Room.objects.get(name=room_group_name)
     if color == 'red':
         room.red = None
-    if color == 'green':
+    elif color == 'green':
         room.green = None
-    if color == 'yellow':
+    elif color == 'yellow':
         room.yellow = None
-    if color == 'blue':
+    elif color == 'blue':
         room.blue = None
     room.save()
     return room
