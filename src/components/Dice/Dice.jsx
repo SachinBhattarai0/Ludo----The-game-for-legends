@@ -1,27 +1,19 @@
 import React, { useState } from "react";
 import { useUserInfo } from "../../context/GameInfo";
-import { useDiceActive } from "../../context/DiceActive";
+import { useDiceInfo } from "../../context/DiceInfoProvider";
 // Used modular form to practice
 import classes from "./Dice.module.css";
 
 const Dice = () => {
-  const [animate, setAnimate] = useState(false);
-  const { EnableOrDisableDice, disableDice } = useDiceActive();
+  const { EnableOrDisableDice, disableDice, animate } = useDiceInfo();
   const { GameInfoState, rollDice } = useUserInfo();
   const { turn, points } = GameInfoState;
 
   const handleDiceClick = () => {
-    animateDice();
+    // animateDice();
     rollDice();
     EnableOrDisableDice();
   };
-
-  const animateDice = () => {
-    setAnimate(true);
-    setTimeout(() => setAnimate(false), 300);
-  };
-
-  console.log(disableDice);
 
   return (
     <div className={classes["dice-container"]}>

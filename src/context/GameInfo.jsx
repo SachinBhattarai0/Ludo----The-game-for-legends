@@ -1,12 +1,14 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { useTokenPositions } from "./TokenPosition";
-import { useDiceActive } from "./DiceActive";
+import { useDiceInfo } from "./DiceInfoProvider";
+import { useSocket } from "./GameWebsocket";
 
 const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
-  const { EnableOrDisableDice } = useDiceActive();
+  const { EnableOrDisableDice } = useDiceInfo();
   const { pathAvailable, TokenPositions } = useTokenPositions();
+  const { gameWebSocket } = useSocket();
 
   const [GameInfoState, setGameInfoState] = useState({
     turn: "Red",
@@ -17,14 +19,12 @@ const GameInfoProvider = ({ children }) => {
 
   const rollDice = () => {
     // Send info to websocket that it is rolled
-    const randomNumber = Math.ceil(Math.random() * 6);
-    setGameInfoState({
-      ...GameInfoState,
-      points: randomNumber,
-      rolledDice: true,
-      changedIdentifier: Math.random(),
-    });
-    return randomNumber;
+    gameWebSocket.send(
+      JSON.stringify({
+        "data-type": "user-rolled-dice",
+        data: {},
+      })
+    );
   };
 
   useEffect(() => {

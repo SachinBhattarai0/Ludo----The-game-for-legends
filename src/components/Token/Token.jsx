@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useTokenPositions } from "../../context/TokenPosition";
 import { useUserInfo } from "../../context/GameInfo";
-import { useDiceActive } from "../../context/DiceActive";
+import { useDiceInfo } from "../../context/DiceInfoProvider";
 import { paths } from "../../utils/TokenPath";
 import "./Token.css";
 
@@ -9,7 +9,7 @@ const Token = ({ color, disable = true, positionIndex }) => {
   const { TokenPositions, setTokenPositions, checkForOut, checkForHome } =
     useTokenPositions();
   const { GameInfoState, setGameInfoState, shuffleTurn } = useUserInfo();
-  const { EnableOrDisableDice } = useDiceActive();
+  const { EnableOrDisableDice } = useDiceInfo();
   const { points } = GameInfoState;
 
   const moveToken = (positionIndex, color) => {
@@ -44,7 +44,7 @@ const Token = ({ color, disable = true, positionIndex }) => {
       shuffleTurn();
       EnableOrDisableDice();
     } else if (points !== 0 && points === 6) {
-      EnableOrDisableDice();
+      EnableOrDisableDice(false);
       setGameInfoState({ ...GameInfoState, rolledDice: false });
     }
   }, [TokenPositions]);

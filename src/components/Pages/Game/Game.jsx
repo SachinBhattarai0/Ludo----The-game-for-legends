@@ -4,13 +4,11 @@ import setHome from "../../../utils/setHome";
 import InitialHomeContainer from "../../InitialHomeContainer/InitialHomeContainer";
 import FinalHomeContainer from "../../FinalHomeContainer/FinalHomeContainer";
 import Boxes from "../../Boxes/Boxes";
-import { WEBSOCKET_URL } from "../../../api/url";
 import { useLocation, useParams } from "react-router-dom";
 import { useUserInfo } from "../../../context/GameInfo";
-import { useDiceActive } from "../../../context/DiceActive";
+import { useDiceInfo } from "../../../context/DiceInfoProvider";
+import { useSocket } from "../../../context/GameWebsocket";
 import "./Game.css";
-
-let webSocket;
 
 function Game() {
   useEffect(setHome, []);
@@ -18,7 +16,8 @@ function Game() {
   const location = useLocation();
   const { gameId } = useParams();
   const { GameInfoState, setGameInfoState } = useUserInfo();
-  const { setdisableDice } = useDiceActive();
+  const { setdisableDice, animateDice } = useDiceInfo();
+  const { gameWebSocket, setGameId } = useSocket();
 
   const {
     data: { beginedBy, usersOnRoom },
@@ -26,22 +25,32 @@ function Game() {
   } = location.state;
 
   const [myColor, _] = Object.entries(usersOnRoom).find(
-    ([color, user]) => user == myUserName
+    ([color, user]) => user === myUserName
   );
 
   useEffect(() => {
-    webSocket = new WebSocket(`${WEBSOCKET_URL}/game/${gameId}/`);
+    setGameId(gameId);
+    if (gameWebSocket) {
+      gameWebSocket.onmessage = ({ data }) => {
+        const res = JSON.parse(data);
+        console.log(res);
 
-    webSocket.onmessage = ({ data }) => {
-      const res = JSON.parse(data);
-      console.log(res);
-
-      if (res["data-type"] === "game-info-state") {
-        setGameInfoState({ ...res.data });
-        setdisableDice(res.data.turn.toLowerCase() === myColor ? false : true);
-      }
-    };
-  }, []);
+        if (res["data-type"] === "game-info-state") {
+          setGameInfoState({ ...res.data });
+          setdisableDice(
+            res.data.turn.toLowerCase() === myColor ? false : true
+          );
+        }
+        if (res["data-type"] === "user-rolled-dice") {
+          animateDice();
+          setGameInfoState({
+            ...GameInfoState,
+            ...res.data,
+          });
+        }
+      };
+    }
+  }, [gameWebSocket]);
 
   console.log(gameId, beginedBy, usersOnRoom, myUserName, myColor);
   return (
