@@ -21,6 +21,8 @@ const Dice = () => {
     setTimeout(() => setAnimate(false), 300);
   };
 
+  console.log(disableDice);
+
   return (
     <div className={classes["dice-container"]}>
       <p>{turn}'s Turn</p>

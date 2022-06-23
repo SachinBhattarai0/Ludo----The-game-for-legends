@@ -16,6 +16,7 @@ const GameInfoProvider = ({ children }) => {
   });
 
   const rollDice = () => {
+    // Send info to websocket that it is rolled
     const randomNumber = Math.ceil(Math.random() * 6);
     setGameInfoState({
       ...GameInfoState,

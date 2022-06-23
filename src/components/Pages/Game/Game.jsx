@@ -6,6 +6,8 @@ import FinalHomeContainer from "../../FinalHomeContainer/FinalHomeContainer";
 import Boxes from "../../Boxes/Boxes";
 import { WEBSOCKET_URL } from "../../../api/url";
 import { useLocation, useParams } from "react-router-dom";
+import { useUserInfo } from "../../../context/GameInfo";
+import { useDiceActive } from "../../../context/DiceActive";
 import "./Game.css";
 
 let webSocket;
@@ -15,6 +17,8 @@ function Game() {
 
   const location = useLocation();
   const { gameId } = useParams();
+  const { GameInfoState, setGameInfoState } = useUserInfo();
+  const { setdisableDice } = useDiceActive();
 
   const {
     data: { beginedBy, usersOnRoom },
@@ -29,10 +33,13 @@ function Game() {
     webSocket = new WebSocket(`${WEBSOCKET_URL}/game/${gameId}/`);
 
     webSocket.onmessage = ({ data }) => {
-      data = JSON.parse(data);
-      console.log(data);
+      const res = JSON.parse(data);
+      console.log(res);
 
-      // if(data['data-type'] === 'initialize-game')
+      if (res["data-type"] === "game-info-state") {
+        setGameInfoState({ ...res.data });
+        setdisableDice(res.data.turn.toLowerCase() === myColor ? false : true);
+      }
     };
   }, []);
 

@@ -15,6 +15,9 @@ def CreateOrVerify(request):
     if not roomName or not password:
         context['message'] = 'Bad roomName or Password'
         return Response(context)
+    if not userName:
+        context['message'] = 'Bad Username'
+        return Response(context)
 
     room = Room.objects.filter(name=roomName)
     
