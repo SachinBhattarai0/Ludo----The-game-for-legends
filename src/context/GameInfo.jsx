@@ -17,12 +17,8 @@ const GameInfoProvider = ({ children }) => {
 
   useEffect(() => {
     const { turn, points } = GameInfoState;
-    if (GameInfoState.points !== 0 && !pathAvailable("__all__", turn, points)) {
-      setTimeout(() => {
-        console.log("soundplay here");
-        shuffleTurn();
-      }, 500);
-    }
+    if (GameInfoState.points !== 0 && !pathAvailable("__all__", turn, points))
+      setTimeout(() => shuffleTurn(), 500);
   }, [GameInfoState.changedIdentifier]);
 
   const shuffleTurn = () => {
@@ -31,7 +27,6 @@ const GameInfoProvider = ({ children }) => {
     const indexOfTurn = allTurns.indexOf(turn);
 
     const newTurn = allTurns[indexOfTurn + 1] || allTurns[0];
-    console.log("Turn changed... New turn is", newTurn);
 
     webSocket.send(
       JSON.stringify({

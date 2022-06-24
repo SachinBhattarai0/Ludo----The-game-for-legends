@@ -7,3 +7,8 @@ export const repetationsOf = (item, array) => {
   });
   return count;
 };
+
+export const arrayFromRepetaions = (item, array) => {
+  const repetations = repetationsOf(item, array);
+  return [...Array(repetations)];
+};

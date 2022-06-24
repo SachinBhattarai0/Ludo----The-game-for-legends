@@ -57,8 +57,6 @@ function Game() {
         setTokenPositions({ ...response.data });
       if (response["data-type"] === "points-is-six")
         setGameInfoState({ ...response.data });
-
-      //
     };
   }, [webSocket]);
 
@@ -66,8 +64,6 @@ function Game() {
     setAnimate(true);
     setTimeout(() => setAnimate(false), 300);
   };
-
-  useEffect(() => console.log(GameInfoState), [GameInfoState]);
 
   // console.log(gameId, beginedBy, usersOnRoom, myUserName, myColor);
   // console.log("my infos", myUserName, myColor);
@@ -81,7 +77,7 @@ function Game() {
 
         <FinalHomeContainer />
 
-        <Boxes />
+        <Boxes myColor={myColor} />
       </div>
       <Dice myColor={myColor} animate={animate} />
     </div>
