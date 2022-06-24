@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { useTokenPositions } from "../../context/TokenPosition";
 import { useUserInfo } from "../../context/GameInfo";
 import { paths } from "../../utils/TokenPath";
+import { useWebSocket } from "../../context/WebsocketProvider";
 import "./Token.css";
 
-const Token = ({ color, disable = true, positionIndex }) => {
-  const { TokenPositions, setTokenPositions, checkForOut, checkForHome } =
-    useTokenPositions();
+const Token = ({ color, myColor, disable = true, positionIndex }) => {
+  const { TokenPositions, checkForOut, checkForHome } = useTokenPositions();
+  const { webSocket } = useWebSocket();
   const { GameInfoState, setGameInfoState, shuffleTurn } = useUserInfo();
-  const { points } = GameInfoState;
+  const { points, turn } = GameInfoState;
 
   const moveToken = (positionIndex, color) => {
     const CurrentActiveTokensPositions = TokenPositions[color];
@@ -32,16 +33,28 @@ const Token = ({ color, disable = true, positionIndex }) => {
 
     checkForHome(newPositions);
 
-    setTokenPositions({
-      ...newPositions,
-    });
+    // Send the data to backend
+    webSocket.send(
+      JSON.stringify({
+        "data-type": "token-position-changed",
+        data: { ...newPositions },
+      })
+    );
   };
 
   useEffect(() => {
     if (points !== 0 && points !== 6) {
       shuffleTurn();
+      console.log("TokenPositions");
     } else if (points !== 0 && points === 6) {
-      setGameInfoState({ ...GameInfoState, rolledDice: false });
+      console.log("other");
+      // Send the data to backend
+      webSocket.send(
+        JSON.stringify({
+          "data-type": "points-is-six",
+          data: { ...GameInfoState, rolledDice: false },
+        })
+      );
     }
   }, [TokenPositions]);
 

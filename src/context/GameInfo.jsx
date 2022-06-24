@@ -21,18 +21,17 @@ const GameInfoProvider = ({ children }) => {
       setTimeout(() => {
         console.log("soundplay here");
         shuffleTurn();
-        // EnableOrDisableDice();
       }, 500);
     }
   }, [GameInfoState.changedIdentifier]);
 
   const shuffleTurn = () => {
     const { turn } = GameInfoState;
-    const allTurns = Object.keys(TokenPositions);
+    const allTurns = ["Red", "Green", "Yellow", "Blue"];
     const indexOfTurn = allTurns.indexOf(turn);
 
     const newTurn = allTurns[indexOfTurn + 1] || allTurns[0];
-    console.log("newTurn is", newTurn);
+    console.log("Turn changed... New turn is", newTurn);
 
     webSocket.send(
       JSON.stringify({

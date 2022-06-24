@@ -24,6 +24,7 @@ const InitialHomeContainer = ({ color, myColor }) => {
             {position === null ? (
               <Token
                 color={color}
+                myColor={myColor}
                 disable={
                   turn.toLowerCase() === myColor &&
                   turn === color &&

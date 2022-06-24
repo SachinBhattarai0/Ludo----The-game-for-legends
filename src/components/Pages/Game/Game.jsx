@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Dice from "../../Dice/Dice";
 import setHome from "../../../utils/setHome";
 import InitialHomeContainer from "../../InitialHomeContainer/InitialHomeContainer";
 import FinalHomeContainer from "../../FinalHomeContainer/FinalHomeContainer";
 import { useUserInfo } from "../../../context/GameInfo";
-import Boxes from "../../Boxes/Boxes";
+import { useTokenPositions } from "../../../context/TokenPosition";
 import { useLocation, useParams } from "react-router-dom";
 import { useWebSocket } from "../../../context/WebsocketProvider";
+import Boxes from "../../Boxes/Boxes";
 import "./Game.css";
 
 function Game() {
@@ -16,6 +17,8 @@ function Game() {
   const { gameId } = useParams();
   const { webSocket, setGameId } = useWebSocket();
   const { GameInfoState, setGameInfoState } = useUserInfo();
+  const [animate, setAnimate] = useState(false);
+  const { TokenPositions, setTokenPositions } = useTokenPositions();
 
   const {
     data: { beginedBy, usersOnRoom },
@@ -39,22 +42,35 @@ function Game() {
 
       if (data["data-type"] === "initialize-game")
         setGameInfoState({ ...response });
-      if (response["data-type"] === "user-rolled-dice")
+      if (response["data-type"] === "user-rolled-dice") {
         setGameInfoState({
           ...response.data,
         });
+        animateDice();
+      }
       if (response["data-type"] === "shuffle-turn")
         setGameInfoState({
           ...GameInfoState,
           ...response.data,
         });
+      if (response["data-type"] === "token-position-changed")
+        setTokenPositions({ ...response.data });
+      if (response["data-type"] === "points-is-six")
+        setGameInfoState({ ...response.data });
+
+      //
     };
   }, [webSocket]);
+
+  const animateDice = () => {
+    setAnimate(true);
+    setTimeout(() => setAnimate(false), 300);
+  };
 
   useEffect(() => console.log(GameInfoState), [GameInfoState]);
 
   // console.log(gameId, beginedBy, usersOnRoom, myUserName, myColor);
-  console.log("my infos", myUserName, myColor);
+  // console.log("my infos", myUserName, myColor);
   return (
     <div className="container">
       <div className="gamePad">
@@ -67,7 +83,7 @@ function Game() {
 
         <Boxes />
       </div>
-      <Dice myColor={myColor} />
+      <Dice myColor={myColor} animate={animate} />
     </div>
   );
 }
