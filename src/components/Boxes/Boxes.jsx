@@ -33,6 +33,7 @@ function Boxes({ myColor }) {
               <Token
                 key={i}
                 color={tokenColor}
+                myColor={myColor}
                 positionIndex={tokenPositions.indexOf(boxIndex)}
                 disable={shouldTokenBeDisabled(
                   tokenColor,

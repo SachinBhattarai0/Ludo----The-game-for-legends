@@ -5,11 +5,11 @@ import { paths } from "../../utils/TokenPath";
 import { useWebSocket } from "../../context/WebsocketProvider";
 import "./Token.css";
 
-const Token = ({ color, disable = true, positionIndex }) => {
+const Token = ({ color, myColor, disable = true, positionIndex }) => {
   const { webSocket } = useWebSocket();
   const { GameInfoState, shuffleTurn } = useUserInfo();
-  const { TokenPositions, checkForOut, checkForHome } = useTokenPositions();
-  const { points } = GameInfoState;
+  const { TokenPositions, checkForOut } = useTokenPositions();
+  const { points, turn } = GameInfoState;
 
   const moveToken = (positionIndex, color) => {
     const CurrentActiveTokensPositions = TokenPositions[color];
@@ -41,7 +41,8 @@ const Token = ({ color, disable = true, positionIndex }) => {
   };
 
   useEffect(() => {
-    if (points !== 0 && points !== 6) shuffleTurn();
+    if (points !== 0 && points !== 6 && turn.toLowerCase() === myColor)
+      shuffleTurn();
     if (points === 6)
       webSocket.send(
         JSON.stringify({
