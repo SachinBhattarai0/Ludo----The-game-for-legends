@@ -1,12 +1,15 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { useTokenPositions } from "./TokenPosition";
 import { useWebSocket } from "./WebsocketProvider";
+import { getNextTurn } from "../utils/getNextTurn";
+import { useWinner } from "./WinnerProvider";
 
 const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
   const { pathAvailable, TokenPositions } = useTokenPositions();
   const { webSocket } = useWebSocket();
+  const { WinnerState } = useWinner();
 
   const [GameInfoState, setGameInfoState] = useState({
     turn: "Red",
@@ -24,12 +27,10 @@ const GameInfoProvider = ({ children }) => {
   const shuffleTurn = () => {
     const { turn } = GameInfoState;
     const allTurns = ["Red", "Green", "Yellow", "Blue"];
-    const keys = Object.keys(TokenPositions);
+    const winners = Object.keys(WinnerState);
+    const availableTurns = allTurns.filter((value) => !winners.includes(value));
 
-    const availableTurns = allTurns.filter((value) => keys.includes(value));
-
-    const indexOfTurn = availableTurns.indexOf(turn);
-    const newTurn = availableTurns[indexOfTurn + 1] || availableTurns[0];
+    const newTurn = getNextTurn(allTurns, availableTurns, turn);
 
     webSocket.send(
       JSON.stringify({

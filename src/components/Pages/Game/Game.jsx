@@ -7,6 +7,8 @@ import { useUserInfo } from "../../../context/GameInfo";
 import { useTokenPositions } from "../../../context/TokenPosition";
 import { useLocation, useParams } from "react-router-dom";
 import { useWebSocket } from "../../../context/WebsocketProvider";
+import { useWinner } from "../../../context/WinnerProvider";
+import GameResults from "../../GameResults/GameResults";
 import Boxes from "../../Boxes/Boxes";
 import "./Game.css";
 
@@ -18,6 +20,8 @@ function Game() {
   const { webSocket, setGameId } = useWebSocket();
   const { GameInfoState, setGameInfoState } = useUserInfo();
   const [animate, setAnimate] = useState(false);
+  const { WinnerState } = useWinner();
+  const winners = Object.entries(WinnerState);
   const { TokenPositions, setTokenPositions, checkForHome } =
     useTokenPositions();
 
@@ -68,6 +72,7 @@ function Game() {
   return (
     <div className="container">
       <div className="gamePad">
+        {winners.length === 3 && <GameResults winners={winners} />}
         <InitialHomeContainer myColor={myColor} color="Red" />
         <InitialHomeContainer myColor={myColor} color="Green" />
         <InitialHomeContainer myColor={myColor} color="Blue" />
