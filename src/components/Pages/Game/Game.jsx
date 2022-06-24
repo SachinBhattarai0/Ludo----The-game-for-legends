@@ -9,6 +9,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useWebSocket } from "../../../context/WebsocketProvider";
 import { useWinner } from "../../../context/WinnerProvider";
 import GameResults from "../../GameResults/GameResults";
+import Message from "../../Message/Message";
 import Boxes from "../../Boxes/Boxes";
 import "./Game.css";
 
@@ -31,7 +32,6 @@ function Game() {
     data: { beginedBy, usersOnRoom },
     myUserName,
   } = location.state;
-
   const [myColor, _] = Object.entries(usersOnRoom).find(
     ([color, user]) => user === myUserName
   );
@@ -71,12 +71,29 @@ function Game() {
   // console.log("my infos", myUserName, myColor);
   return (
     <div className="container">
+      <Message message={`game successfully started by ${beginedBy}`} />
       <div className="gamePad">
         {winners.length === 3 && <GameResults winners={winners} />}
-        <InitialHomeContainer myColor={myColor} color="Red" />
-        <InitialHomeContainer myColor={myColor} color="Green" />
-        <InitialHomeContainer myColor={myColor} color="Blue" />
-        <InitialHomeContainer myColor={myColor} color="Yellow" />
+        <InitialHomeContainer
+          myColor={myColor}
+          user={usersOnRoom["red"]}
+          color="Red"
+        />
+        <InitialHomeContainer
+          myColor={myColor}
+          user={usersOnRoom["green"]}
+          color="Green"
+        />
+        <InitialHomeContainer
+          myColor={myColor}
+          user={usersOnRoom["blue"]}
+          color="Blue"
+        />
+        <InitialHomeContainer
+          myColor={myColor}
+          user={usersOnRoom["yellow"]}
+          color="Yellow"
+        />
 
         <FinalHomeContainer />
 

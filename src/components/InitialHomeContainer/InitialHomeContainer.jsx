@@ -5,7 +5,7 @@ import { useTokenPositions } from "../../context/TokenPosition";
 import { useWinner } from "../../context/WinnerProvider";
 import "./InitialHomeContainer.css";
 
-const InitialHomeContainer = ({ color, myColor }) => {
+const InitialHomeContainer = ({ color, myColor, user }) => {
   const { TokenPositions } = useTokenPositions();
   const { GameInfoState } = useUserInfo();
   const { turn, points, rolledDice } = GameInfoState;
@@ -24,25 +24,28 @@ const InitialHomeContainer = ({ color, myColor }) => {
 
   return (
     <div className={`initial-home-container ${color.toLowerCase()}`}>
-      <div className="initial-home">
-        {WinnerState[color] ? <div>{WinnerState[color]} Winner</div> : ""}
+      <div className="initial-home-wrapper">
+        <p>{user}</p>
+        <div className="initial-home">
+          {WinnerState[color] ? <div>{WinnerState[color]} Winner</div> : ""}
 
-        {TokenPositions[color]?.map((position, positionIndex) => (
-          <div
-            key={positionIndex}
-            className={`initial-token-container ${color.toLowerCase()}`}
-          >
-            {position === null ? (
-              <Token
-                color={color}
-                disable={shouldTokenBeDisabled()}
-                positionIndex={positionIndex}
-              />
-            ) : (
-              ""
-            )}
-          </div>
-        ))}
+          {TokenPositions[color]?.map((position, positionIndex) => (
+            <div
+              key={positionIndex}
+              className={`initial-token-container ${color.toLowerCase()}`}
+            >
+              {position === null ? (
+                <Token
+                  color={color}
+                  disable={shouldTokenBeDisabled()}
+                  positionIndex={positionIndex}
+                />
+              ) : (
+                ""
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -3,9 +3,20 @@
   justify-content: center;
   align-items: center;
 }
-.initial-home {
+.initial-home-wrapper {
   height: 70%;
   width: 70%;
+  transform: translateY(-1.2rem);
+}
+.initial-home-wrapper p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-weight: 500;
+}
+.initial-home {
+  height: 100%;
+  width: 100%;
   padding: 11px 15px;
   box-sizing: border-box;
   border: 2px solid black;

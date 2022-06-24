@@ -9,14 +9,14 @@ const TokenPosition = createContext();
 
 const TokenPositionProvider = ({ children }) => {
   const [TokenPositions, setTokenPositions] = useState({
-    // Red: [null, null, null, null],
-    // Green: [null, null, null, null],
-    // Yellow: [null, null, null, null],
-    // Blue: [null, null, null, null],
-    Red: [31, "Home", "Home", "Home"],
-    Green: [4, "Home", "Home", "Home"],
-    Yellow: [36, "Home", "Home", "Home"],
-    Blue: [55, "Home", "Home", "Home"],
+    Red: [null, null, null, null],
+    Green: [null, null, null, null],
+    Yellow: [null, null, null, null],
+    Blue: [null, null, null, null],
+    // Red: [31, "Home", "Home", "Home"],
+    // Green: [4, "Home", "Home", "Home"],
+    // Yellow: [36, "Home", "Home", "Home"],
+    // Blue: [55, "Home", "Home", "Home"],
   });
   const { WinnerState, setWinnerState } = useWinner();
 

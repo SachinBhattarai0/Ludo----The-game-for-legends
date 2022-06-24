@@ -7,7 +7,7 @@ import { useWinner } from "./WinnerProvider";
 const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
-  const { pathAvailable, TokenPositions } = useTokenPositions();
+  const { pathAvailable } = useTokenPositions();
   const { webSocket } = useWebSocket();
   const { WinnerState } = useWinner();
 
