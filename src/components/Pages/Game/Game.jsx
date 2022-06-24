@@ -18,7 +18,10 @@ function Game() {
   const { webSocket, setGameId } = useWebSocket();
   const { GameInfoState, setGameInfoState } = useUserInfo();
   const [animate, setAnimate] = useState(false);
-  const { TokenPositions, setTokenPositions } = useTokenPositions();
+  const { TokenPositions, setTokenPositions, checkForHome } =
+    useTokenPositions();
+
+  useEffect(() => checkForHome(TokenPositions), [TokenPositions]);
 
   const {
     data: { beginedBy, usersOnRoom },
@@ -42,21 +45,16 @@ function Game() {
 
       if (data["data-type"] === "initialize-game")
         setGameInfoState({ ...response });
-      if (response["data-type"] === "user-rolled-dice") {
-        setGameInfoState({
-          ...response.data,
-        });
-        animateDice();
-      }
-      if (response["data-type"] === "shuffle-turn")
-        setGameInfoState({
-          ...GameInfoState,
-          ...response.data,
-        });
       if (response["data-type"] === "token-position-changed")
         setTokenPositions({ ...response.data });
       if (response["data-type"] === "points-is-six")
         setGameInfoState({ ...response.data });
+      if (response["data-type"] === "shuffle-turn")
+        setGameInfoState({ ...GameInfoState, ...response.data });
+      if (response["data-type"] === "user-rolled-dice") {
+        setGameInfoState({ ...response.data });
+        animateDice();
+      }
     };
   }, [webSocket]);
 

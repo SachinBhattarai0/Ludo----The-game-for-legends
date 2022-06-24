@@ -24,9 +24,12 @@ const GameInfoProvider = ({ children }) => {
   const shuffleTurn = () => {
     const { turn } = GameInfoState;
     const allTurns = ["Red", "Green", "Yellow", "Blue"];
-    const indexOfTurn = allTurns.indexOf(turn);
+    const keys = Object.keys(TokenPositions);
 
-    const newTurn = allTurns[indexOfTurn + 1] || allTurns[0];
+    const availableTurns = allTurns.filter((value) => keys.includes(value));
+
+    const indexOfTurn = availableTurns.indexOf(turn);
+    const newTurn = availableTurns[indexOfTurn + 1] || availableTurns[0];
 
     webSocket.send(
       JSON.stringify({

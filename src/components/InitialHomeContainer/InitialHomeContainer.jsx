@@ -11,6 +11,17 @@ const InitialHomeContainer = ({ color, myColor }) => {
   const { turn, points, rolledDice } = GameInfoState;
   const { WinnerState } = useWinner();
 
+  const shouldTokenBeDisabled = () => {
+    if (
+      turn.toLowerCase() === myColor &&
+      turn === color &&
+      points === 6 &&
+      rolledDice
+    )
+      return false;
+    return true;
+  };
+
   return (
     <div className={`initial-home-container ${color.toLowerCase()}`}>
       <div className="initial-home">
@@ -24,14 +35,7 @@ const InitialHomeContainer = ({ color, myColor }) => {
             {position === null ? (
               <Token
                 color={color}
-                disable={
-                  turn.toLowerCase() === myColor &&
-                  turn === color &&
-                  points === 6 &&
-                  rolledDice
-                    ? false
-                    : true
-                }
+                disable={shouldTokenBeDisabled()}
                 positionIndex={positionIndex}
               />
             ) : (

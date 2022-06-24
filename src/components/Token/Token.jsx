@@ -31,8 +31,6 @@ const Token = ({ color, disable = true, positionIndex }) => {
       CurrentActiveTokensPositions
     );
 
-    checkForHome(newPositions);
-
     // Send the data to backend
     webSocket.send(
       JSON.stringify({
