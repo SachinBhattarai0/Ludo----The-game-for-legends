@@ -3,7 +3,8 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { WEBSOCKET_URL } from "../../../api/url";
 import "./Room.css";
 
-var Socket;
+let Socket, SendToSocket;
+
 const Room = () => {
   const navigate = useNavigate();
   const { roomName } = useParams();
@@ -15,6 +16,10 @@ const Room = () => {
 
   useEffect(() => {
     Socket = new WebSocket(`${WEBSOCKET_URL}/room/${roomName}/${myUserName}/`);
+
+    SendToSocket = (data) => {
+      Socket.send(JSON.stringify(data));
+    };
 
     Socket.onmessage = ({ data }) => {
       let res = JSON.parse(data);
@@ -40,9 +45,7 @@ const Room = () => {
     let newState = { ...usersOnRoom, [newValue]: myUserName };
     newState = { ...newState, [myPrevValue]: user };
 
-    Socket.send(
-      JSON.stringify({ "data-type": "user-change-color", data: newState })
-    );
+    SendToSocket({ "data-type": "user-change-color", data: newState });
   };
 
   const beginGame = () => {
@@ -51,12 +54,10 @@ const Room = () => {
     );
 
     if (nullUserIndex < 0)
-      Socket.send(
-        JSON.stringify({
-          "data-type": "begin-game",
-          data: { usersOnRoom, beginedBy: myUserName },
-        })
-      );
+      SendToSocket({
+        "data-type": "begin-game",
+        data: { usersOnRoom, beginedBy: myUserName },
+      });
     else setError("All users not in the room");
   };
 

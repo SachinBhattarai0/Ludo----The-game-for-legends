@@ -6,21 +6,19 @@ import classes from "./Dice.module.css";
 const Dice = ({ myColor, animate }) => {
   const { GameInfoState } = useUserInfo();
   const { turn, points } = GameInfoState;
-  const { webSocket } = useWebSocket();
+  const { sendToSocket } = useWebSocket();
 
   const handleDiceClick = () => {
     const randomNumber = Math.ceil(Math.random() * 6);
-    webSocket.send(
-      JSON.stringify({
-        "data-type": "user-rolled-dice",
-        data: {
-          ...GameInfoState,
-          points: randomNumber,
-          rolledDice: true,
-          changedIdentifier: Math.random(),
-        },
-      })
-    );
+    sendToSocket({
+      "data-type": "user-rolled-dice",
+      data: {
+        ...GameInfoState,
+        points: randomNumber,
+        rolledDice: true,
+        changedIdentifier: Math.random(),
+      },
+    });
   };
 
   return (

@@ -8,7 +8,7 @@ const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
   const { pathAvailable } = useTokenPositions();
-  const { webSocket } = useWebSocket();
+  const { sendToSocket } = useWebSocket();
   const { WinnerState } = useWinner();
 
   const [GameInfoState, setGameInfoState] = useState({
@@ -32,15 +32,13 @@ const GameInfoProvider = ({ children }) => {
 
     const newTurn = getNextTurn(allTurns, availableTurns, turn);
 
-    webSocket.send(
-      JSON.stringify({
-        "data-type": "shuffle-turn",
-        data: {
-          turn: newTurn,
-          rolledDice: false,
-        },
-      })
-    );
+    sendToSocket({
+      "data-type": "shuffle-turn",
+      data: {
+        turn: newTurn,
+        rolledDice: false,
+      },
+    });
   };
 
   return (

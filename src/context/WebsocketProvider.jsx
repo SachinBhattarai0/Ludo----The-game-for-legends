@@ -6,12 +6,20 @@ const WebSocketContext = createContext();
 const WebsocketProvider = ({ children }) => {
   const [gameId, setGameId] = useState("");
 
+  const createNewSocket = (url) => {
+    return new WebSocket(url);
+  };
+
   const webSocket = gameId
     ? new WebSocket(`${WEBSOCKET_URL}/game/${gameId}/`)
     : "";
 
+  const sendToSocket = (data) => {
+    webSocket.send(JSON.stringify(data));
+  };
+
   return (
-    <WebSocketContext.Provider value={{ webSocket, setGameId }}>
+    <WebSocketContext.Provider value={{ webSocket, setGameId, sendToSocket }}>
       {children}
     </WebSocketContext.Provider>
   );
