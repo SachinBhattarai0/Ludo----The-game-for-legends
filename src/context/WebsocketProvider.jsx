@@ -1,25 +1,24 @@
 import React, { useState, useContext, createContext } from "react";
-import { WEBSOCKET_URL } from "../api/url";
 
 const WebSocketContext = createContext();
 
 const WebsocketProvider = ({ children }) => {
-  const [gameId, setGameId] = useState("");
+  const [webSockets, setwebSockets] = useState({});
 
-  const createNewSocket = (url) => {
-    return new WebSocket(url);
+  const createNewSocket = (socketName, url) => {
+    const newSocket = new WebSocket(url);
+    setwebSockets({ ...webSockets, [socketName]: newSocket });
+    return newSocket;
   };
 
-  const webSocket = gameId
-    ? new WebSocket(`${WEBSOCKET_URL}/game/${gameId}/`)
-    : "";
-
-  const sendToSocket = (data) => {
-    webSocket.send(JSON.stringify(data));
+  const sendToSocket = (socket, data) => {
+    socket.send(JSON.stringify(data));
   };
 
   return (
-    <WebSocketContext.Provider value={{ webSocket, setGameId, sendToSocket }}>
+    <WebSocketContext.Provider
+      value={{ createNewSocket, webSockets, sendToSocket }}
+    >
       {children}
     </WebSocketContext.Provider>
   );

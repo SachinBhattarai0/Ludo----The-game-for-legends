@@ -11,22 +11,22 @@ import { useWinner } from "../../../context/WinnerProvider";
 import GameResults from "../../GameResults/GameResults";
 import Message from "../../Message/Message";
 import Boxes from "../../Boxes/Boxes";
+import { WEBSOCKET_URL } from "../../../api/url";
 import "./Game.css";
 
+let Socket;
 function Game() {
   useEffect(setHome, []);
 
   const location = useLocation();
   const { gameId } = useParams();
-  const { webSocket, setGameId } = useWebSocket();
+  const { createNewSocket } = useWebSocket();
   const { GameInfoState, setGameInfoState } = useUserInfo();
   const [animate, setAnimate] = useState(false);
   const { WinnerState } = useWinner();
   const winners = Object.entries(WinnerState);
   const { TokenPositions, setTokenPositions, checkForHome } =
     useTokenPositions();
-
-  useEffect(() => checkForHome(TokenPositions), [TokenPositions]);
 
   const {
     data: { beginedBy, usersOnRoom },
@@ -37,11 +37,8 @@ function Game() {
   );
 
   useEffect(() => {
-    if (!webSocket) {
-      setGameId(gameId);
-      return;
-    }
-    webSocket.onmessage = ({ data }) => {
+    Socket = createNewSocket("gameSocket", `${WEBSOCKET_URL}/game/${gameId}/`);
+    Socket.onmessage = ({ data }) => {
       data = JSON.parse(data);
       const { response } = data;
       // console.log(data);
@@ -60,7 +57,9 @@ function Game() {
         animateDice();
       }
     };
-  }, [webSocket]);
+  }, []);
+
+  useEffect(() => checkForHome(TokenPositions), [TokenPositions]);
 
   const animateDice = () => {
     setAnimate(true);

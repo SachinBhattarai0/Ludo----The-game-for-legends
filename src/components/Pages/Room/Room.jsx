@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useWebSocket } from "../../../context/WebsocketProvider";
 import { WEBSOCKET_URL } from "../../../api/url";
 import "./Room.css";
 
-let Socket, SendToSocket;
-
 const Room = () => {
+  const { createNewSocket, sendToSocket, webSockets } = useWebSocket();
   const navigate = useNavigate();
   const { roomName } = useParams();
   const location = useLocation();
@@ -15,11 +15,10 @@ const Room = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Socket = new WebSocket(`${WEBSOCKET_URL}/room/${roomName}/${myUserName}/`);
-
-    SendToSocket = (data) => {
-      Socket.send(JSON.stringify(data));
-    };
+    let Socket = createNewSocket(
+      "roomSocket",
+      `${WEBSOCKET_URL}/room/${roomName}/${myUserName}/`
+    );
 
     Socket.onmessage = ({ data }) => {
       let res = JSON.parse(data);
@@ -45,7 +44,10 @@ const Room = () => {
     let newState = { ...usersOnRoom, [newValue]: myUserName };
     newState = { ...newState, [myPrevValue]: user };
 
-    SendToSocket({ "data-type": "user-change-color", data: newState });
+    sendToSocket(webSockets["roomSocket"], {
+      "data-type": "user-change-color",
+      data: newState,
+    });
   };
 
   const beginGame = () => {
@@ -54,7 +56,7 @@ const Room = () => {
     );
 
     if (nullUserIndex < 0)
-      SendToSocket({
+      sendToSocket(webSockets["roomSocket"], {
         "data-type": "begin-game",
         data: { usersOnRoom, beginedBy: myUserName },
       });

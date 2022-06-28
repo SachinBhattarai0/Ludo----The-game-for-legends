@@ -6,7 +6,7 @@ import { useWebSocket } from "../../context/WebsocketProvider";
 import "./Token.css";
 
 const Token = ({ color, myColor, disable = true, positionIndex }) => {
-  const { sendToSocket } = useWebSocket();
+  const { sendToSocket, webSockets } = useWebSocket();
   const { GameInfoState, shuffleTurn } = useUserInfo();
   const { TokenPositions, checkForOut } = useTokenPositions();
   const { points, turn } = GameInfoState;
@@ -32,7 +32,7 @@ const Token = ({ color, myColor, disable = true, positionIndex }) => {
     );
 
     // Send the data to backend
-    sendToSocket({
+    sendToSocket(webSockets["gameSocket"], {
       "data-type": "token-position-changed",
       data: { ...newPositions },
     });
@@ -42,7 +42,7 @@ const Token = ({ color, myColor, disable = true, positionIndex }) => {
     if (points !== 0 && points !== 6 && turn.toLowerCase() === myColor)
       shuffleTurn();
     if (points === 6)
-      sendToSocket({
+      sendToSocket(webSockets["gameSocket"], {
         "data-type": "points-is-six",
         data: { ...GameInfoState, rolledDice: false },
       });

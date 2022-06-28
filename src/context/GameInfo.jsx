@@ -8,7 +8,7 @@ const userInfoContext = createContext();
 
 const GameInfoProvider = ({ children }) => {
   const { pathAvailable } = useTokenPositions();
-  const { sendToSocket } = useWebSocket();
+  const { sendToSocket, webSockets } = useWebSocket();
   const { WinnerState } = useWinner();
 
   const [GameInfoState, setGameInfoState] = useState({
@@ -32,7 +32,7 @@ const GameInfoProvider = ({ children }) => {
 
     const newTurn = getNextTurn(allTurns, availableTurns, turn);
 
-    sendToSocket({
+    sendToSocket(webSockets["gameSocket"], {
       "data-type": "shuffle-turn",
       data: {
         turn: newTurn,

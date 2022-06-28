@@ -3,14 +3,14 @@ import { useUserInfo } from "../../context/GameInfo";
 import { useWebSocket } from "../../context/WebsocketProvider";
 import classes from "./Dice.module.css";
 
-const Dice = ({ myColor, animate }) => {
+const Dice = ({ myColor, animate, Socket }) => {
   const { GameInfoState } = useUserInfo();
   const { turn, points } = GameInfoState;
-  const { sendToSocket } = useWebSocket();
+  const { sendToSocket, webSockets } = useWebSocket();
 
   const handleDiceClick = () => {
     const randomNumber = Math.ceil(Math.random() * 6);
-    sendToSocket({
+    sendToSocket(webSockets["gameSocket"], {
       "data-type": "user-rolled-dice",
       data: {
         ...GameInfoState,
